@@ -22,11 +22,18 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
+    "@fastify/static": "^6.5.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/graphql": "^10.1.2",
+    "@nestjs/mercurius": "^10.1.2",
     "@nestjs/platform-fastify": "^9.1.1",
+    "@nestjs/swagger": "^6.1.2",
     "@nestjs/typeorm": "^9.0.1",
+    "fastify": "^4.6.0",
+    "graphql": "^16.6.0",
+    "mercurius": "^10.5.1",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
