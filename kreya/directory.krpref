@@ -1,0 +1,13 @@
+{
+  "settings": [
+    {
+      "environmentId": "a3568807-a253-4cbe-a11f-e73daa903aa9",
+      "options": {
+        "grpc": {
+          "endpoint": "http://127.0.0.1:5000",
+          "disableServerCertificateValidation": true
+        }
+      }
+    }
+  ]
+}

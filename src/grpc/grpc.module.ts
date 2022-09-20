@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DataModule } from 'src/data/data.module';
-import { PostsResolver } from './posts.resolver';
+import { PostsService } from './posts.grpc';
 
 @Module({
   imports: [DataModule],
-  providers: [PostsResolver],
+  controllers: [PostsService],
 })
-export class GraphqlModule {}
+export class GrpcModule {}

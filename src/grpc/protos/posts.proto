@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package posts;
+
+message Empty {}
+
+message Post {
+    string id = 1;
+}
+
+service PostsService {
+    // Get all
+    rpc GetAll(Empty) returns (GetAllResponse);
+}
+
+message GetAllResponse {
+    repeated Post posts = 1;
+}

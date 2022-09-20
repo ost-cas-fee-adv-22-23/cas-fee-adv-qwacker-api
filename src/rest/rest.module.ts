@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DataModule } from 'src/data/data.module';
-import { PostsController } from './posts/posts.controller';
+import { PostsController } from './posts.controller';
 
 @Module({
   imports: [DataModule],

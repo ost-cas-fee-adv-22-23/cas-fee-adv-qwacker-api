@@ -7,6 +7,7 @@ import { DataModule } from './data/data.module';
 import { Like, Post } from './entities';
 import { GraphqlModule } from './graphql/graphql.module';
 import { RestModule } from './rest/rest.module';
+import { GrpcModule } from './grpc/grpc.module';
 
 @Module({
   imports: [
@@ -29,10 +30,12 @@ import { RestModule } from './rest/rest.module';
     }),
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
-      // graphiql: true,
+      graphiql: true,
+      ide: true,
       autoSchemaFile: true,
       sortSchema: true,
     }),
+    GrpcModule,
   ],
 })
 export class AppModule {}
