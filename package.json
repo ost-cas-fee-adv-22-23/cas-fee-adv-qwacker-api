@@ -1,13 +1,13 @@
 {
   "name": "qwacker-api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.0.0-development",
+  "description": "API for 'qwacker'. A simple messaging api for the CAS Frontend Engineering Advanced.",
+  "author": "smartive AG <hello@smartive.ch>",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache 2.0",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "npm run grpc:types && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

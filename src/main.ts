@@ -11,7 +11,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
-import { version } from '../package.json';
+import { description, version } from '../package.json';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -33,7 +33,7 @@ async function bootstrap() {
 
   const swagger = new DocumentBuilder()
     .setTitle('qwacker API')
-    .setDescription('Description for the qwacker REST API.')
+    .setDescription(description)
     .setVersion(version)
     .build();
   const document = SwaggerModule.createDocument(app, swagger);
