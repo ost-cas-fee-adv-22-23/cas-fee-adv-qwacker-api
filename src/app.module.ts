@@ -8,6 +8,7 @@ import { Like, Post } from './entities';
 import { GraphqlModule } from './graphql/graphql.module';
 import { RestModule } from './rest/rest.module';
 import { GrpcModule } from './grpc/grpc.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { GrpcModule } from './grpc/grpc.module';
       sortSchema: true,
     }),
     GrpcModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
