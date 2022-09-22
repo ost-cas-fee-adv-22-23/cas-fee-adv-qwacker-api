@@ -13,14 +13,9 @@ export class ZitadelAuthStrategy extends PassportStrategy(
   constructor(config: ConfigService) {
     super({
       authority: config.getOrThrow('AUTH_ISSUER'),
-      // authorization: {
-      //   type: 'jwt-profile',
-      //   profile: JSON.parse(config.getOrThrow('AUTH_JWT_KEY')),
-      // },
       authorization: {
-        type: 'basic',
-        clientId: config.getOrThrow('AUTH_CLIENT_ID'),
-        clientSecret: config.getOrThrow('AUTH_CLIENT_SECRET'),
+        type: 'jwt-profile',
+        profile: JSON.parse(config.getOrThrow('AUTH_JWT_KEY')),
       },
     } as ZitadelIntrospectionOptions);
   }
