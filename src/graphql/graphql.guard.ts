@@ -2,31 +2,28 @@ import {
   createParamDecorator,
   ExecutionContext,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { IAuthModuleOptions } from '@nestjs/passport';
 import { ZitadelAuthGuard } from 'src/auth/zitadel.guard';
 
 @Injectable()
 export class ZitadelGraphqlAuthGuard extends ZitadelAuthGuard {
-  getAuthenticateOptions(
-    context: ExecutionContext,
-  ): IAuthModuleOptions<any> | undefined {
+  getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     return ctx.getContext().req;
   }
 }
 
 @Injectable()
-export class OptionalZitadelGraphqlAuthGuard extends ZitadelAuthGuard {
-  getAuthenticateOptions(
-    context: ExecutionContext,
-  ): IAuthModuleOptions<any> | undefined {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
-  }
+export class OptionalZitadelGraphqlAuthGuard extends ZitadelGraphqlAuthGuard {
+  private readonly logger = new Logger(OptionalZitadelGraphqlAuthGuard.name);
 
-  handleRequest<TUser = any>(_: any, user: any): TUser {
+  handleRequest<TUser = any>(err: any, user: any): TUser {
+    if (err) {
+      this.logger.error(err);
+      return null as any;
+    }
     return user;
   }
 }

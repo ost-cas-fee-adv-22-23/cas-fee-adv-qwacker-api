@@ -1,7 +1,7 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
@@ -9,7 +9,6 @@ import { Like, Post } from './entities';
 import { GraphqlModule } from './graphql/graphql.module';
 import { GrpcModule } from './grpc/grpc.module';
 import { RestModule } from './rest/rest.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -29,11 +28,13 @@ import { RestModule } from './rest/rest.module';
         entities: [Post, Like],
       }),
     }),
-    GraphQLModule.forRoot<MercuriusDriverConfig>({
-      driver: MercuriusDriver,
-      graphiql: true,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      include: [GraphqlModule],
+      driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
+      debug: false,
+      playground: true,
     }),
     GrpcModule,
     AuthModule,

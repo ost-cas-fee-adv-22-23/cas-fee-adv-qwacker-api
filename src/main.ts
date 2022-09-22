@@ -5,20 +5,13 @@ import {
   MicroserviceOptions,
   Transport,
 } from '@nestjs/microservices';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { description, version } from '../package.json';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter({ logger: true }),
-  );
+  const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService>(ConfigService);
 
   const grpcOptions: ClientOptions = {
