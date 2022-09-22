@@ -1,0 +1,16 @@
+{
+  "details": {
+    "endpoint": "http://localhost:3000",
+    "path": "/posts",
+    "method": "GET",
+    "headers": []
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "GET"
+}

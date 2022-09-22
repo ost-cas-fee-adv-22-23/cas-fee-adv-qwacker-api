@@ -89,7 +89,7 @@ export class ZitadelIntrospectionStrategy extends Strategy {
           }
         : {
             client_id: this.options.authorization.profile.clientId,
-            introspection_endpoint_auth_method: 'private_key_jwt',
+            introspection_endpoint_auth_method: 'client_secret_jwt',
           };
 
     const introspectionEndpoint = issuer.metadata[

@@ -3,12 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { Like, Post } from './entities';
 import { GraphqlModule } from './graphql/graphql.module';
-import { RestModule } from './rest/rest.module';
 import { GrpcModule } from './grpc/grpc.module';
-import { AuthModule } from './auth/auth.module';
+import { RestModule } from './rest/rest.module';
 
 @Module({
   imports: [
@@ -32,7 +32,6 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
       graphiql: true,
-      ide: true,
       autoSchemaFile: true,
       sortSchema: true,
     }),

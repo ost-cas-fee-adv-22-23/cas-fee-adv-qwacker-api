@@ -23,6 +23,20 @@
       }
     }
   ],
-  "authConfigs": [],
+  "authConfigs": [
+    {
+      "name": "test",
+      "providerName": "oidc",
+      "id": "a0e07fba-715d-4855-841c-755817257725",
+      "options": {
+        "redirectUri": "http://localhost:8080/signin",
+        "clientId": "179944860378267905@cas_fee_adv_qwacker",
+        "scope": "openid profile",
+        "issuer": "https://cas-fee-advanced-ocvdad.zitadel.cloud",
+        "clientAuthMethod": "none",
+        "grantType": "authorizationCode"
+      }
+    }
+  ],
   "certificates": []
 }

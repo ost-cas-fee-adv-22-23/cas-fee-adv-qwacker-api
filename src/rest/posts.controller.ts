@@ -1,13 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { OptionalZitadelAuthGuard } from 'src/auth/zitadel.guard';
 import { PostsService } from 'src/data/posts/posts.service';
-import { Post } from 'src/entities';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly posts: PostsService) {}
 
+  @UseGuards(OptionalZitadelAuthGuard)
   @Get()
-  test(): Promise<Post[]> {
-    return this.posts.all();
+  test(@Req() a: any): Promise<any> {
+    return a.user;
   }
 }
