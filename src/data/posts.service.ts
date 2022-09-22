@@ -97,4 +97,11 @@ export class PostsService {
 
     return await this.aggregatedPosts.findOneOrFail({ where: { id: post.id } });
   }
+
+  /**
+   * Delete a post (if it exists).
+   */
+  async delete(id: string, userId: string) {
+    await this.posts.delete({ id, creator: userId });
+  }
 }

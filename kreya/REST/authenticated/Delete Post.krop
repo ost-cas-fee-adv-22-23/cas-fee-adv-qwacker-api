@@ -1,0 +1,15 @@
+{
+  "details": {
+    "path": "/posts/01GDJV1FZY9YNRD19ZPMEHWHG1",
+    "method": "DELETE",
+    "headers": []
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "DELETE"
+}

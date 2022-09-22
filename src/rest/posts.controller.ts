@@ -134,8 +134,13 @@ export class PostsController {
 
   @UseGuards(ZitadelAuthGuard)
   @ApiBearerAuth('ZITADEL')
-  @Delete()
-  delete(@RestUser() user: User): Promise<any> {
-    throw '';
+  @Delete(':id')
+  @HttpCode(204)
+  async delete(@RestUser() user: User, @Param('id') id: string): Promise<void> {
+    if (!user || !user.sub) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    await this.posts.delete(id, user.sub);
   }
 }

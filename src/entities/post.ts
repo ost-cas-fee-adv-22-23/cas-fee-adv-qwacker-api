@@ -32,17 +32,17 @@ export class Post {
   @Column({ nullable: true })
   mediaType?: string;
 
-  @Column()
+  @Column({ nullable: true })
   parentId?: string;
 
-  @ManyToOne(() => Post, (p) => p.replies)
+  @ManyToOne(() => Post, (p) => p.replies, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'parentId' })
   parent?: Post;
 
   @OneToMany(() => Post, (p) => p.parent)
   replies?: Post[];
 
-  @OneToMany(() => Like, (l) => l.post)
+  @OneToMany(() => Like, (l) => l.post, { onDelete: 'CASCADE' })
   likes?: Like[];
 }
 
