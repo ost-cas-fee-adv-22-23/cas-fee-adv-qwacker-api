@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { importPKCS8, SignJWT } from 'jose';
@@ -70,7 +71,7 @@ export class ZitadelIntrospectionStrategy extends Strategy {
 
       this.success(result);
     } catch (e) {
-      this.error(e);
+      (this.error ?? console.error)(e);
     }
   }
 
@@ -91,14 +92,18 @@ export class ZitadelIntrospectionStrategy extends Strategy {
             introspection_endpoint_auth_method: 'private_key_jwt',
           };
 
-    const client = new issuer.Client(options);
+    const introspectionEndpoint = issuer.metadata[
+      'introspection_endpoint'
+    ] as string;
 
     let jwt = '';
     let lastCreated = 0;
 
-    const getPayload = async () => {
+    const getPayload = async (
+      token: string,
+    ): Promise<Record<string, string>> => {
       if (this.options.authorization.type === 'basic') {
-        return undefined;
+        return { token };
       }
 
       // check if the last created time is older than 60 minutes, if so, create a new jwt.
@@ -114,6 +119,7 @@ export class ZitadelIntrospectionStrategy extends Strategy {
           sub: options.client_id,
           aud: this.options.authority,
         })
+          .setIssuedAt()
           .setExpirationTime('1h')
           .setProtectedHeader({
             alg: 'RS256',
@@ -124,15 +130,31 @@ export class ZitadelIntrospectionStrategy extends Strategy {
       }
 
       return {
-        clientAssertionPayload: {
-          client_assertion_type:
-            'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-          client_assertion: jwt,
-        },
+        client_assertion_type:
+          'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+        client_assertion: jwt,
+        token,
       };
     };
 
-    return async (token: string) =>
-      client.introspect(token, 'access_token', await getPayload());
+    return async (token: string) => {
+      const payload = await getPayload(token);
+
+      const response = await axios.post(
+        introspectionEndpoint,
+        new URLSearchParams(payload),
+        {
+          auth:
+            this.options.authorization.type === 'basic'
+              ? {
+                  username: this.options.authorization.clientId,
+                  password: this.options.authorization.clientSecret,
+                }
+              : undefined,
+        },
+      );
+
+      return response.data as IntrospectionResponse;
+    };
   }
 }
