@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { ZitadelAuthGuard } from 'src/auth/zitadel.guard';
+import { ZitadelAuthGuard } from 'src/rest/rest.guard';
 
 @Injectable()
 export class ZitadelGrpcAuthGuard extends ZitadelAuthGuard {

@@ -1,6 +1,5 @@
 {
   "details": {
-    "endpoint": "http://localhost:3000",
     "path": "/posts",
     "method": "GET",
     "headers": []
@@ -10,7 +9,6 @@
       "contentType": "none"
     }
   ],
-  "authId": "a0e07fba-715d-4855-841c-755817257725",
   "operationType": "unary",
   "invokerName": "rest",
   "typeHint": "GET"

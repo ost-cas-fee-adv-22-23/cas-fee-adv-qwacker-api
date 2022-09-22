@@ -1,2 +1,2 @@
 export { Like } from './like';
-export { Post } from './post';
+export { AggregatedPost, Post } from './post';

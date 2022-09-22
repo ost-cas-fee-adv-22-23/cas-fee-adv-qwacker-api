@@ -1,4 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
@@ -16,3 +21,8 @@ export class OptionalZitadelAuthGuard extends ZitadelAuthGuard {
     return user;
   }
 }
+
+export const RestUser = createParamDecorator(
+  (_: unknown, context: ExecutionContext) =>
+    context.switchToHttp().getRequest().user,
+);

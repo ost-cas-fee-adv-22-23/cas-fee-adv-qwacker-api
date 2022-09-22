@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ZitadelAuthGuard } from 'src/auth/zitadel.guard';
+import { ZitadelAuthGuard } from 'src/rest/rest.guard';
 
 @Injectable()
 export class ZitadelGraphqlAuthGuard extends ZitadelAuthGuard {

@@ -28,6 +28,25 @@ async function bootstrap() {
     .setTitle('qwacker API')
     .setDescription(description)
     .setVersion(version)
+    .addBearerAuth(
+      {
+        type: 'openIdConnect',
+        description: 'ZITADEL Authentication',
+        name: 'ZITADEL',
+        in: 'header',
+        openIdConnectUrl:
+          'https://cas-fee-advanced-ocvdad.zitadel.cloud/.well-known/openid-configuration',
+        flows: {
+          authorizationCode: {
+            scopes: {
+              openid: true,
+              profile: true,
+            },
+          },
+        },
+      },
+      'ZITADEL',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, swagger);
   SwaggerModule.setup('rest', app, document);

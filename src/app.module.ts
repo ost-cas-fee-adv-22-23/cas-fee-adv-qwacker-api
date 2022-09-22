@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { Like, Post } from './entities';
+import { AggregatedPost } from './entities/post';
 import { GraphqlModule } from './graphql/graphql.module';
 import { GrpcModule } from './grpc/grpc.module';
 import { RestModule } from './rest/rest.module';
@@ -25,7 +26,7 @@ import { RestModule } from './rest/rest.module';
         username: config.get<string>('DATABASE_USER'),
         password: config.get<string>('DATABASE_PASS'),
         database: config.get<string>('DATABASE_NAME'),
-        entities: [Post, Like],
+        entities: [AggregatedPost, Post, Like],
       }),
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({

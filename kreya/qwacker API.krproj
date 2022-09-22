@@ -25,7 +25,7 @@
   ],
   "authConfigs": [
     {
-      "name": "test",
+      "name": "ZITADEL",
       "providerName": "oidc",
       "id": "a0e07fba-715d-4855-841c-755817257725",
       "options": {

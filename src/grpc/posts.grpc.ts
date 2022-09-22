@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
-import { PostsService as DataPostsService } from '../data/posts/posts.service';
+import { PostsService as DataPostsService } from '../data/posts.service';
 import { GetAllResponse } from './gen/posts/GetAllResponse';
 import { GrpcUser, OptionalZitadelGrpcAuthGuard } from './grpc.guard';
 
@@ -10,9 +10,7 @@ export class PostsService {
 
   @UseGuards(OptionalZitadelGrpcAuthGuard)
   @GrpcMethod()
-  async getAll(@GrpcUser() u: any): Promise<GetAllResponse> {
-    console.log(u);
-    const posts = await this.posts.all();
-    return { posts };
+  async getAll(): Promise<GetAllResponse> {
+    return { posts: [] };
   }
 }
