@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
-  ClientOptions,
+  GrpcOptions,
   MicroserviceOptions,
   Transport,
 } from '@nestjs/microservices';
@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService>(ConfigService);
 
-  const grpcOptions: ClientOptions = {
+  const grpcOptions: GrpcOptions = {
     transport: Transport.GRPC,
     options: {
       url: `127.0.0.1:${config.get<number>('GRPC_PORT')}`,

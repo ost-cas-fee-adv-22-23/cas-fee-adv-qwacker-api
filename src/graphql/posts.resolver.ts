@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Query, Resolver } from '@nestjs/graphql';
 import { PostsService } from 'src/data/posts/posts.service';
-import { CurrentUser, OptionalZitadelGraphqlAuthGuard } from './graphql.guard';
+import { GqlUser, OptionalZitadelGraphqlAuthGuard } from './graphql.guard';
 import { Post } from './posts.models';
 
 @Resolver(() => Post)
@@ -10,7 +10,7 @@ export class PostsResolver {
 
   @UseGuards(OptionalZitadelGraphqlAuthGuard)
   @Query(() => [Post])
-  test(@CurrentUser() u: any): Promise<Post[]> {
+  test(@GqlUser() u: any): Promise<Post[]> {
     console.log(u);
     return this.posts.all();
   }
