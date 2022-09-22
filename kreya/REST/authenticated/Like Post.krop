@@ -1,7 +1,7 @@
 {
   "details": {
-    "path": "/posts/01GDJVNK13CDM3FPP3VBPA63F7",
-    "method": "DELETE",
+    "path": "/posts/01GDJVP86V92ED0VAWFFARGWF7/likes",
+    "method": "PUT",
     "headers": []
   },
   "requests": [
@@ -11,5 +11,5 @@
   ],
   "operationType": "unary",
   "invokerName": "rest",
-  "typeHint": "DELETE"
+  "typeHint": "PUT"
 }

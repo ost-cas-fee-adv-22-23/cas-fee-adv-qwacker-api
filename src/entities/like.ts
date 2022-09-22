@@ -9,6 +9,6 @@ export class Like {
   @PrimaryColumn()
   userId: string;
 
-  @ManyToOne(() => Post, (p) => p.likes)
+  @ManyToOne(() => Post, (p) => p.likes, { onDelete: 'CASCADE' })
   post?: Post;
 }

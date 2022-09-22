@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AggregatedPost, Post } from 'src/entities';
+import { AggregatedPost, Like, Post } from 'src/entities';
 import { Brackets, IsNull, Repository } from 'typeorm';
 import { CreateParams, SearchParams } from './data.models';
 
@@ -14,6 +14,8 @@ export class PostsService {
     private readonly aggregatedPosts: Repository<AggregatedPost>,
     @InjectRepository(Post)
     private readonly posts: Repository<Post>,
+    @InjectRepository(Like)
+    private readonly likes: Repository<Like>,
   ) {}
 
   /**
@@ -103,5 +105,25 @@ export class PostsService {
    */
   async delete(id: string, userId: string) {
     await this.posts.delete({ id, creator: userId });
+  }
+
+  /**
+   * Create a like on the given post.
+   */
+  async like(id: string, userId: string) {
+    await this.likes
+      .createQueryBuilder()
+      .insert()
+      .into(Like)
+      .values({ postId: id, userId })
+      .orIgnore()
+      .execute();
+  }
+
+  /**
+   * Remove a like of the given user on the given post.
+   */
+  async unlike(id: string, userId: string) {
+    await this.likes.delete({ postId: id, userId });
   }
 }
