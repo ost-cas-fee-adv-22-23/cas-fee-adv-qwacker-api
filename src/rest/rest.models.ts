@@ -1,14 +1,26 @@
 import { User } from 'src/auth/user';
+import { SearchParams } from 'src/data/data.models';
 import { AggregatedPost } from 'src/entities';
 
-export type PaginatedResult<TData> = {
+export type PaginatedResult<TData> = PaginatedSearchResult<TData, string>;
+
+export type PaginatedSearchResult<TData, TParams> = {
   data: TData[];
   count: number;
-  next?: string;
-  previous?: string;
+  next?: TParams;
+  previous?: TParams;
 };
 
-export class Post {
+export type PostSearchParams = SearchParams & {
+  offset?: number;
+  limit?: number;
+};
+
+export type CreatePostParams = {
+  text: string;
+};
+
+type BasePost = {
   id: string;
   creator: string;
   text: string;
@@ -16,19 +28,42 @@ export class Post {
   mediaType?: string;
   likeCount: number;
   likedByUser: boolean;
-  replyCount: number;
+};
 
-  static mapFromAggregated(user: User): (post: AggregatedPost) => Post {
-    return (post: AggregatedPost): Post => {
-      const result = {
-        ...post,
-        likers: undefined,
-        likeCount: post.likers.length,
-        likedByUser: user ? post.likers.includes(user.sub ?? '') : false,
-      };
-      delete result.likers;
+export type Post = BasePost & {
+  type: 'post';
+  replyCount?: number;
+};
 
-      return result;
+export type Reply = BasePost & {
+  type: 'reply';
+  parentId: string;
+};
+
+export type PostResult = Post | Reply;
+
+export const mapPostResult =
+  (user: User) =>
+  (agg: AggregatedPost): PostResult => {
+    const base = {
+      id: agg.id,
+      creator: agg.creator,
+      text: agg.text,
+      mediaUrl: agg.mediaUrl,
+      mediaType: agg.mediaType,
+      likeCount: agg.likers.length,
+      likedByUser: agg.likers.includes(user ? user.sub ?? '' : ''),
     };
-  }
-}
+
+    return agg.parentId
+      ? {
+          ...base,
+          type: 'reply',
+          parentId: agg.parentId,
+        }
+      : {
+          ...base,
+          type: 'post',
+          replyCount: agg.replyCount,
+        };
+  };

@@ -14,7 +14,7 @@
       "id": "8f0ebc31-4edd-474b-bd33-c7c6af8b3f94",
       "name": "proto-importer",
       "importerName": "ProtoFile",
-      "createMissingOperations": true,
+      "createMissingOperations": false,
       "options": {
         "files": [
           "../src/grpc/protos"

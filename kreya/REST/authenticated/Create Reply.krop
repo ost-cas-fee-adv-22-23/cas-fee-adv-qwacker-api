@@ -1,0 +1,21 @@
+{
+  "details": {
+    "path": "/posts/01GDJT8DJPEZ4F6F8J7Q4WG10P",
+    "method": "POST",
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "location": "Create Reply-request.json",
+      "contentType": "json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "POST"
+}

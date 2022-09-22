@@ -2,6 +2,7 @@ import {
   Check,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
@@ -31,7 +32,11 @@ export class Post {
   @Column({ nullable: true })
   mediaType?: string;
 
+  @Column()
+  parentId?: string;
+
   @ManyToOne(() => Post, (p) => p.replies)
+  @JoinColumn({ name: 'parentId' })
   parent?: Post;
 
   @OneToMany(() => Post, (p) => p.parent)
@@ -65,8 +70,7 @@ export class Post {
     coalesce(r.count, 0) as "replyCount"
   from posts p
     left join postlikes lp on p.id = lp."postId"
-    left join replies r on r."parentId" = p.id
-  where p."parentId" is null;
+    left join replies r on r."parentId" = p.id;
   `,
 })
 export class AggregatedPost {
@@ -84,6 +88,9 @@ export class AggregatedPost {
 
   @ViewColumn()
   mediaType?: string;
+
+  @ViewColumn()
+  parentId?: string;
 
   @ViewColumn()
   likers: string[];

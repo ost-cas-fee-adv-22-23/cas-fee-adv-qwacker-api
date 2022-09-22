@@ -24,5 +24,7 @@ export class OptionalZitadelAuthGuard extends ZitadelAuthGuard {
 
 export const RestUser = createParamDecorator(
   (_: unknown, context: ExecutionContext) =>
-    context.switchToHttp().getRequest().user,
+    context.switchToHttp().getRequest().user
+      ? context.switchToHttp().getRequest().user
+      : null,
 );
