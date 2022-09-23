@@ -31,6 +31,6 @@ export class OptionalZitadelGraphqlAuthGuard extends ZitadelGraphqlAuthGuard {
 export const GqlUser = createParamDecorator(
   (_: unknown, context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req.user;
+    return ctx.getContext().req.user ? ctx.getContext().req.user : null;
   },
 );

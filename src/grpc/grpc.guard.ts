@@ -45,8 +45,3 @@ export class OptionalZitadelGrpcAuthGuard extends ZitadelGrpcAuthGuard {
     return user;
   }
 }
-
-export const GrpcUser = createParamDecorator(
-  (_: unknown, context: ExecutionContext) =>
-    context.switchToRpc().getContext().get('user')?.[0],
-);
