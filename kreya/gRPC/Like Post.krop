@@ -1,10 +1,10 @@
 {
   "details": {
-    "methodFqn": "posts.PostsService.GetAll"
+    "methodFqn": "posts.PostsService.Like"
   },
   "requests": [
     {
-      "location": "GetAll-request.json"
+      "location": "Like Post-request.json"
     }
   ],
   "operationType": "unary",

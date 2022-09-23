@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs -d datasource.ts",
     "pregrpc:types": "rimraf src/grpc/gen",
-    "grpc:types": "proto-loader-gen-types --longs=String --enums=String --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/grpc/gen/ src/grpc/protos/posts.proto",
+    "grpc:types": "proto-loader-gen-types --longs=String --enums=String --keepCase --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/grpc/gen/ src/grpc/protos/posts.proto",
     "pjs": "ts-node strategytest.ts"
   },
   "dependencies": {

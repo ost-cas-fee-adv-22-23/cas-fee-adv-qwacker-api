@@ -44,6 +44,7 @@ export type DeletedPost = {
   type: 'deleted';
   id: string;
   creator: string;
+  parentId?: string;
 };
 
 export type PostResult = Post | Reply | DeletedPost;
@@ -52,11 +53,18 @@ export const mapPostResult =
   (user: User) =>
   (agg: AggregatedPost): PostResult => {
     if (agg.deleted) {
-      return {
-        type: 'deleted',
-        id: agg.id,
-        creator: agg.creator,
-      };
+      return agg.parentId
+        ? {
+            type: 'deleted',
+            id: agg.id,
+            creator: agg.creator,
+            parentId: agg.parentId,
+          }
+        : {
+            type: 'deleted',
+            id: agg.id,
+            creator: agg.creator,
+          };
     }
 
     const base = {

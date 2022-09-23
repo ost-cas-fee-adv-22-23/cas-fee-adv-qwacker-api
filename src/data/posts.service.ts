@@ -89,28 +89,6 @@ export class PostsService {
     return { posts, count };
   }
 
-  // /**
-  //  * Fetch replies for a specific post.
-  //  */
-  // async getRepliesForPost(id: string) {
-  //   const posts = await this.getPostsWithReplies([id]);
-  //   if(posts.length === 0) {
-  //     return {post:};
-  //   }
-  // }
-
-  // /**
-  //  * Fetch replies for a list of posts.
-  //  */
-  // async getPostsWithReplies(ids: string[]) {
-  //   return await this.posts.find({
-  //     where: { id: In(ids) },
-  //     relations: {
-  //       replies: true,
-  //     },
-  //   });
-  // }
-
   /**
    * Create a new post and return the inserted post.
    */
@@ -131,6 +109,18 @@ export class PostsService {
     const post = await this.posts.save(newPost);
 
     return await this.aggregatedPosts.findOneOrFail({ where: { id: post.id } });
+  }
+
+  async getPostWithReplies(id: string) {
+    const post = await this.aggregatedPosts.findOneOrFail({
+      where: { id },
+    });
+    const replies = await this.aggregatedPosts.find({
+      where: { parentId: id },
+      order: { id: 'desc' },
+    });
+
+    return { post, replies };
   }
 
   /**

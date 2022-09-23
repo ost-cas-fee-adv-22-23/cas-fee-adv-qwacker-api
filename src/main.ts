@@ -20,6 +20,7 @@ async function bootstrap() {
       url: `127.0.0.1:${config.get<number>('GRPC_PORT')}`,
       package: ['posts'],
       protoPath: join(__dirname, './grpc/protos/posts.proto'),
+      loader: { keepCase: true },
     },
   };
   app.connectMicroservice<MicroserviceOptions>(grpcOptions);

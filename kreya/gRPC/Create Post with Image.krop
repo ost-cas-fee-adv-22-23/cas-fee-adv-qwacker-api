@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Create"
+  },
+  "requests": [
+    {
+      "location": "Create Post with Image-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

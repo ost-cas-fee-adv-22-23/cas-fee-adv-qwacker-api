@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Replies"
+  },
+  "requests": [
+    {
+      "location": "Get Replies-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

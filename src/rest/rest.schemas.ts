@@ -70,6 +70,12 @@ export const deletedSchema = {
       description: 'ID of the user who created the post.',
       example: '179944860378202369',
     },
+    parentId: {
+      type: 'string',
+      description: 'ID of the parent.',
+      example: '01GDMMR85BEHP8AKV8ZGGM259K',
+      nullable: true,
+    },
   },
 };
 

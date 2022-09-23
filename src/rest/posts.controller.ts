@@ -146,6 +146,29 @@ export class PostsController {
   }
 
   @UseGuards(OptionalZitadelAuthGuard)
+  @Get(':id/replies')
+  @ApiOperation({
+    description: 'Get an ordered list of replies for the given post.',
+  })
+  @ApiParam({ name: 'id', description: 'The ID (ulid) of the post to like.' })
+  @ApiProduces('application/json')
+  @ApiResponse({
+    status: 200,
+    description: 'The list of replies for a given post.',
+    schema: {
+      type: 'array',
+      uniqueItems: true,
+      items: {
+        oneOf: [replySchema, deletedSchema],
+      },
+    },
+  })
+  async replies(@RestUser() user: User, @Param('id') id: string) {
+    const { replies } = await this.posts.getPostWithReplies(id);
+    return replies.map(mapPostResult(user));
+  }
+
+  @UseGuards(OptionalZitadelAuthGuard)
   @Post('search')
   @HttpCode(200)
   @ApiOperation({
@@ -201,10 +224,8 @@ export class PostsController {
   })
   async search(
     @RestUser() user: User,
-    @Body() params: PostSearchParams,
+    @Body() { offset = 0, limit = 100, ...params }: PostSearchParams,
   ): Promise<PaginatedSearchResult<PostResult, PostSearchParams>> {
-    const offset = params.offset ?? 0;
-    const limit = params.limit ?? 100;
     const { count, posts } = await this.posts.search(params, offset, limit);
 
     return {
@@ -214,6 +235,7 @@ export class PostsController {
         count > offset + limit
           ? {
               ...params,
+              limit,
               offset: offset + limit,
             }
           : undefined,
@@ -221,6 +243,7 @@ export class PostsController {
         offset > 0
           ? {
               ...params,
+              limit,
               offset: Math.max(offset - limit, 0),
             }
           : undefined,
