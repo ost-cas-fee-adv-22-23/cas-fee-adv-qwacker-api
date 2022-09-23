@@ -1,3 +1,0 @@
-{
-  "text": "{{ faker.lorem.sentence() }} REPLY #foo #bar #baz cc @hurrlibutz"
-}

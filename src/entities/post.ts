@@ -35,14 +35,17 @@ export class Post {
   @Column({ nullable: true })
   parentId?: string;
 
-  @ManyToOne(() => Post, (p) => p.replies, { onDelete: 'CASCADE' })
+  @Column({ type: 'bool', default: false })
+  deleted = false;
+
+  @ManyToOne(() => Post, (p) => p.replies)
   @JoinColumn({ name: 'parentId' })
   parent?: Post;
 
   @OneToMany(() => Post, (p) => p.parent)
   replies?: Post[];
 
-  @OneToMany(() => Like, (l) => l.post, { onDelete: 'CASCADE' })
+  @OneToMany(() => Like, (l) => l.post)
   likes?: Like[];
 }
 
@@ -91,6 +94,9 @@ export class AggregatedPost {
 
   @ViewColumn()
   parentId?: string;
+
+  @ViewColumn()
+  deleted: boolean;
 
   @ViewColumn()
   likers: string[];

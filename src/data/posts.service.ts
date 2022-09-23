@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AggregatedPost, Like, Post } from 'src/entities';
 import { Brackets, IsNull, Repository } from 'typeorm';
 import { CreateParams, SearchParams } from './data.models';
+import { MediaService } from './media.service';
 
 const clamp = (num: number, min: number, max: number) =>
   Math.min(Math.max(num, min), max);
@@ -16,14 +17,12 @@ export class PostsService {
     private readonly posts: Repository<Post>,
     @InjectRepository(Like)
     private readonly likes: Repository<Like>,
+    private readonly media: MediaService,
   ) {}
 
   /**
    * Fetch a list of aggregated posts (not replies).
-   *
-   * @param offset The offset to start from
-   * @param limit The maximum number of posts to return (max: 1000)
-   * @returns An object that contains the posts and the total number of posts
+   * Also returns deleted posts.
    */
   async list(offset: number, limit: number) {
     limit = clamp(limit, 1, 1000);
@@ -42,7 +41,7 @@ export class PostsService {
 
   /**
    * Search for posts and replies according to the provided search params.
-   * Results are paginated.
+   * Results are paginated. Does not find deleted posts.
    */
   async search(
     { isReply, text, mentions, tags }: SearchParams,
@@ -55,7 +54,8 @@ export class PostsService {
       .createQueryBuilder('p')
       .skip(offset)
       .take(limit)
-      .orderBy('p.id', 'DESC');
+      .orderBy('p.id', 'DESC')
+      .where('p.deleted = false');
 
     if (isReply !== undefined) {
       query = query.andWhere(`p.parentId IS ${isReply ? 'NOT' : ''} NULL`);
@@ -89,22 +89,60 @@ export class PostsService {
     return { posts, count };
   }
 
+  // /**
+  //  * Fetch replies for a specific post.
+  //  */
+  // async getRepliesForPost(id: string) {
+  //   const posts = await this.getPostsWithReplies([id]);
+  //   if(posts.length === 0) {
+  //     return {post:};
+  //   }
+  // }
+
+  // /**
+  //  * Fetch replies for a list of posts.
+  //  */
+  // async getPostsWithReplies(ids: string[]) {
+  //   return await this.posts.find({
+  //     where: { id: In(ids) },
+  //     relations: {
+  //       replies: true,
+  //     },
+  //   });
+  // }
+
   /**
    * Create a new post and return the inserted post.
    */
-  async create({ text, userId, parentId }: CreateParams) {
-    const post = await this.posts.save(
-      this.posts.create({ text, creator: userId, parentId }),
-    );
+  async create({
+    text,
+    userId,
+    parentId,
+    mediaBuffer,
+    mediaType,
+  }: CreateParams) {
+    const newPost = this.posts.create({ text, creator: userId, parentId });
+
+    if (mediaBuffer !== undefined && mediaType !== undefined) {
+      newPost.mediaType = mediaType;
+      newPost.mediaUrl = await this.media.upload(mediaBuffer, mediaType);
+    }
+
+    const post = await this.posts.save(newPost);
 
     return await this.aggregatedPosts.findOneOrFail({ where: { id: post.id } });
   }
 
   /**
-   * Delete a post (if it exists).
+   * Set a post to "deleted" if it exists.
    */
   async delete(id: string, userId: string) {
-    await this.posts.delete({ id, creator: userId });
+    await this.posts
+      .createQueryBuilder()
+      .update()
+      .set({ deleted: true })
+      .where({ id, creator: userId })
+      .execute();
   }
 
   /**

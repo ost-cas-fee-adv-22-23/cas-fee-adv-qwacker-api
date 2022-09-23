@@ -7,6 +7,8 @@ export type SearchParams = {
 
 export type CreateParams = {
   text: string;
-  parentId?: string;
   userId: string;
+  parentId?: string;
+  mediaBuffer?: Buffer;
+  mediaType?: string;
 };

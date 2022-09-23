@@ -5,14 +5,25 @@
     "headers": [
       {
         "key": "Content-Type",
-        "value": "application/json"
+        "value": "multipart/form-data"
       }
     ]
   },
   "requests": [
     {
-      "location": "Create Post-request.json",
-      "contentType": "json"
+      "contentType": "multipart",
+      "content": {
+        "entries": [
+          {
+            "name": "text",
+            "type": "raw",
+            "contentType": "text",
+            "textContent": {
+              "filePath": "Create Post-request-part-1.txt"
+            }
+          }
+        ]
+      }
     }
   ],
   "operationType": "unary",

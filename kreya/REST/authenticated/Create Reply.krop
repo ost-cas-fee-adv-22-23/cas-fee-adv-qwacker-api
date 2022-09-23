@@ -1,18 +1,29 @@
 {
   "details": {
-    "path": "/posts/01GDJV062C79FFJETQCF4X6VQW",
+    "path": "/posts/01GDN25B7MYWYT2EVDP0623XS3",
     "method": "POST",
     "headers": [
       {
         "key": "Content-Type",
-        "value": "application/json"
+        "value": "multipart/form-data"
       }
     ]
   },
   "requests": [
     {
-      "location": "Create Reply-request.json",
-      "contentType": "json"
+      "contentType": "multipart",
+      "content": {
+        "entries": [
+          {
+            "name": "text",
+            "type": "raw",
+            "contentType": "text",
+            "textContent": {
+              "filePath": "Create Reply-request-part-1.txt"
+            }
+          }
+        ]
+      }
     }
   ],
   "operationType": "unary",

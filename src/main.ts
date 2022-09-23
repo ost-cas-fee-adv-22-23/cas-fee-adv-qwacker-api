@@ -28,6 +28,13 @@ async function bootstrap() {
     .setTitle('qwacker API')
     .setDescription(description)
     .setVersion(version)
+    .setLicense('Apache 2.0', 'https://www.apache.org/licenses/LICENSE-2.0')
+    .setContact('smartive AG', 'https://smartive.ch', 'education@smartive.ch')
+    .addTag(
+      'Posts',
+      'All related endpoints for posts. Allows creating, deleting, replying and searching.',
+    )
+    .addTag('Likes', 'Like and unlike posts.')
     .addBearerAuth(
       {
         type: 'openIdConnect',
@@ -39,8 +46,8 @@ async function bootstrap() {
         flows: {
           authorizationCode: {
             scopes: {
-              openid: true,
-              profile: true,
+              openid: 'openid',
+              profile: 'profile',
             },
           },
         },
