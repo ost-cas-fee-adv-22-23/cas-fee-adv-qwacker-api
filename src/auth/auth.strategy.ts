@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import {
   ZitadelIntrospectionOptions,
   ZitadelIntrospectionStrategy,
-} from './passport.strategy';
+} from 'passport-zitadel';
 
 @Injectable()
 export class ZitadelAuthStrategy extends PassportStrategy(

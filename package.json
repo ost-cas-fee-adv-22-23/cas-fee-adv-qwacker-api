@@ -25,7 +25,6 @@
     "pjs": "ts-node strategytest.ts"
   },
   "dependencies": {
-    "@fastify/static": "^6.5.0",
     "@google-cloud/storage": "^6.5.2",
     "@grpc/grpc-js": "^1.7.0",
     "@grpc/proto-loader": "^0.7.2",
@@ -46,6 +45,7 @@
     "node-rsa": "^1.1.1",
     "openid-client": "^5.1.9",
     "passport": "^0.6.0",
+    "passport-zitadel": "^1.0.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

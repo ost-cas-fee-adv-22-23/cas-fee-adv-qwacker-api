@@ -1,26 +1,31 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { HttpException, UseGuards } from '@nestjs/common';
+import { Args, ID, Int, Query, Resolver } from '@nestjs/graphql';
 import { User } from 'src/auth/user';
 import { PostsService } from 'src/data/posts.service';
 import { AggregatedPost } from 'src/entities';
 import { GqlUser, OptionalZitadelGraphqlAuthGuard } from './graphql.guard';
 import {
+  DeletedPost,
   ListResult,
   Post,
   PostResult,
+  RepliesResult,
+  Reply,
+  SearchParams,
   SearchPostResult,
+  SearchResult,
 } from './graphql.models';
 
 const mapPostResult =
   (user: User) =>
   (post: AggregatedPost): typeof PostResult =>
     post.deleted
-      ? {
+      ? Object.assign(new DeletedPost(), {
           id: post.id,
           creator: post.creator,
-        }
+        })
       : post.parentId
-      ? {
+      ? Object.assign(new Reply(), {
           id: post.id,
           creator: post.creator,
           text: post.text,
@@ -29,8 +34,8 @@ const mapPostResult =
           likeCount: post.likers.length,
           likedByUser: post.likers.includes(user?.sub ?? ''),
           parentId: post.parentId,
-        }
-      : {
+        })
+      : Object.assign(new Post(), {
           id: post.id,
           creator: post.creator,
           text: post.text,
@@ -39,9 +44,11 @@ const mapPostResult =
           likeCount: post.likers.length,
           likedByUser: post.likers.includes(user?.sub ?? ''),
           replyCount: post.replyCount,
-        };
+        });
 
-@Resolver(() => Post)
+@Resolver(() => RepliesResult)
+@Resolver(() => ListResult)
+@Resolver(() => SearchResult)
 export class PostsResolver {
   constructor(private readonly posts: PostsService) {}
 
@@ -78,14 +85,44 @@ export class PostsResolver {
   }
 
   @UseGuards(OptionalZitadelGraphqlAuthGuard)
-  @Query(() => [SearchPostResult])
-  async search(): Promise<Array<typeof SearchPostResult>> {
-    throw '';
+  @Query(() => SearchResult, {
+    description: 'Search posts and replies in the database.',
+  })
+  async search(
+    @Args() { offset = 0, limit = 100, ...params }: SearchParams,
+    @GqlUser() user: User,
+  ): Promise<SearchResult> {
+    const { count, posts } = await this.posts.search(params, offset, limit);
+
+    return {
+      count,
+      data: posts.map(mapPostResult(user)) as any as Array<
+        typeof SearchPostResult
+      >,
+      nextPageOffset: count > offset + limit ? offset + limit : undefined,
+      previousPageOffset: offset > 0 ? Math.max(offset - limit, 0) : undefined,
+    };
   }
 
   @UseGuards(OptionalZitadelGraphqlAuthGuard)
-  @Query(() => [PostResult])
-  async replies(): Promise<Array<typeof PostResult>> {
-    throw '';
+  @Query(() => [RepliesResult], {
+    description: 'Fetch a list of replies to a specific post.',
+  })
+  async replies(
+    @Args('id', {
+      type: () => ID,
+      nullable: false,
+      description: 'The ID of the parent post.',
+    })
+    id: string,
+    @GqlUser() user: User,
+  ): Promise<Array<typeof RepliesResult>> {
+    if (!id) {
+      throw new HttpException('id is required', 400);
+    }
+
+    const { replies } = await this.posts.getPostWithReplies(id);
+
+    return replies.map(mapPostResult(user));
   }
 }
