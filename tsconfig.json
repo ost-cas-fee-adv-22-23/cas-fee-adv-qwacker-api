@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "CommonJS",
     "allowJs": true,
     "maxNodeModuleJsDepth": 10,
     "declaration": true,
