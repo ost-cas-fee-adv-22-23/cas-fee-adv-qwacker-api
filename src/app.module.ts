@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLByte } from 'graphql-scalars';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { Like, Post } from './entities';
@@ -10,6 +11,7 @@ import { AggregatedPost } from './entities/post';
 import { GraphqlModule } from './graphql/graphql.module';
 import { GrpcModule } from './grpc/grpc.module';
 import { RestModule } from './rest/rest.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),

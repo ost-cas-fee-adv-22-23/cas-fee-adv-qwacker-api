@@ -123,6 +123,14 @@ export class PostsService {
     return { post, replies };
   }
 
+  async get(id: string) {
+    const post = await this.aggregatedPosts.findOneOrFail({
+      where: { id },
+    });
+
+    return post;
+  }
+
   /**
    * Set a post to "deleted" if it exists.
    */

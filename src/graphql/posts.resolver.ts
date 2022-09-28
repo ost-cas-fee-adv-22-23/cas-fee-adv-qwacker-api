@@ -1,14 +1,17 @@
 import { HttpException, UseGuards } from '@nestjs/common';
-import { Args, ID, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from 'src/auth/user';
 import { PostsService } from 'src/data/posts.service';
 import { AggregatedPost } from 'src/entities';
-import { GqlUser, OptionalZitadelGraphqlAuthGuard } from './graphql.guard';
+import {
+  GqlUser,
+  OptionalZitadelGraphqlAuthGuard,
+  ZitadelGraphqlAuthGuard,
+} from './graphql.guard';
 import {
   DeletedPost,
   ListResult,
   Post,
-  PostResult,
   RepliesResult,
   Reply,
   SearchParams,
@@ -18,7 +21,7 @@ import {
 
 const mapPostResult =
   (user: User) =>
-  (post: AggregatedPost): typeof PostResult =>
+  (post: AggregatedPost): Post | Reply | DeletedPost =>
     post.deleted
       ? Object.assign(new DeletedPost(), {
           id: post.id,
@@ -124,5 +127,80 @@ export class PostsResolver {
     const { replies } = await this.posts.getPostWithReplies(id);
 
     return replies.map(mapPostResult(user));
+  }
+
+  @UseGuards(ZitadelGraphqlAuthGuard)
+  @Mutation(() => ID, {
+    description: 'Like a post in the system.',
+  })
+  async like(
+    @Args('id', {
+      type: () => ID,
+      nullable: false,
+      description: 'The ID of the post that should be liked.',
+    })
+    id: string,
+    @GqlUser() user: User,
+  ) {
+    if (!user || !user.sub) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    if (!id || id.length <= 0) {
+      throw new HttpException('id is required', 400);
+    }
+
+    await this.posts.like(id, user.sub);
+    return id;
+  }
+
+  @UseGuards(ZitadelGraphqlAuthGuard)
+  @Mutation(() => ID, {
+    description: 'Delete a like on a post in the system.',
+  })
+  async unlike(
+    @Args('id', {
+      type: () => ID,
+      nullable: false,
+      description: 'The ID of the post that should be unliked.',
+    })
+    id: string,
+    @GqlUser() user: User,
+  ) {
+    if (!user || !user.sub) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    if (!id || id.length <= 0) {
+      throw new HttpException('id is required', 400);
+    }
+
+    await this.posts.unlike(id, user.sub);
+    return id;
+  }
+
+  @UseGuards(ZitadelGraphqlAuthGuard)
+  @Mutation(() => ID, {
+    description: 'Delete a post in the system.',
+  })
+  async delete(
+    @Args('id', {
+      type: () => ID,
+      nullable: false,
+      description: 'The ID of the post that should be unliked.',
+    })
+    id: string,
+    @GqlUser() user: User,
+  ) {
+    if (!user || !user.sub) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    if (!id || id.length <= 0) {
+      throw new HttpException('id is required', 400);
+    }
+
+    await this.posts.delete(id, user.sub);
+    return id;
   }
 }

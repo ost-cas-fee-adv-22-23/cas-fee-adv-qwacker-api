@@ -14,8 +14,8 @@ export class ListResult {
   @Field(() => Int, { description: 'Total number of posts in the system.' })
   count: number;
 
-  @Field(() => [PostResult])
-  data: Array<typeof PostResult>;
+  @Field(() => [ListPostResult])
+  data: Array<typeof ListPostResult>;
 
   @Field(() => Int, {
     nullable: true,
@@ -102,9 +102,9 @@ export class Reply extends NonDeletedPostBase {
   parentId: string;
 }
 
-export const PostResult = createUnionType({
-  name: 'PostResult',
-  types: () => [Post, Reply, DeletedPost] as const,
+export const ListPostResult = createUnionType({
+  name: 'ListPostResult',
+  types: () => [Post, DeletedPost] as const,
 });
 
 export const RepliesResult = createUnionType({
