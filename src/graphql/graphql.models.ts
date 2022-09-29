@@ -117,6 +117,11 @@ export const SearchPostResult = createUnionType({
   types: () => [Post, Reply] as const,
 });
 
+export const CreatePostResult = createUnionType({
+  name: 'CreatePostResult',
+  types: () => [Post, Reply] as const,
+});
+
 @ArgsType()
 export class SearchParams {
   @Field({

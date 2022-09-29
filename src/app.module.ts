@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLByte } from 'graphql-scalars';
+import { ByteResolver, ByteTypeDefinition } from 'graphql-scalars';
 import { AuthModule } from './auth/auth.module';
 import { DataModule } from './data/data.module';
 import { Like, Post } from './entities';
@@ -38,6 +38,10 @@ import { RestModule } from './rest/rest.module';
       sortSchema: true,
       debug: false,
       playground: true,
+      resolvers: {
+        Byte: ByteResolver,
+      },
+      typeDefs: [ByteTypeDefinition],
     }),
     GrpcModule,
     AuthModule,

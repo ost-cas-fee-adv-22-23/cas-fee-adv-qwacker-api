@@ -1,5 +1,6 @@
 import { HttpException, UseGuards } from '@nestjs/common';
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ByteResolver as Byte } from 'graphql-scalars';
 import { User } from 'src/auth/user';
 import { PostsService } from 'src/data/posts.service';
 import { AggregatedPost } from 'src/entities';
@@ -9,6 +10,7 @@ import {
   ZitadelGraphqlAuthGuard,
 } from './graphql.guard';
 import {
+  CreatePostResult,
   DeletedPost,
   ListResult,
   Post,
@@ -177,6 +179,58 @@ export class PostsResolver {
 
     await this.posts.unlike(id, user.sub);
     return id;
+  }
+
+  @UseGuards(ZitadelGraphqlAuthGuard)
+  @Mutation(() => CreatePostResult, {
+    description: 'Create a new post or a reply to a post.',
+  })
+  async create(
+    @GqlUser() user: User,
+    @Args('text', {
+      type: () => String,
+      description: 'The text for the post.',
+      nullable: false,
+    })
+    text: string,
+    @Args('parentId', {
+      type: () => ID,
+      description:
+        'Defines the parent post for a reply, if any. When omitted, a new "post" is created instead of a reply.',
+      nullable: true,
+    })
+    parentId?: string,
+    @Args('media', {
+      type: () => Byte,
+      description: 'Base64 encoded media file for the post.',
+      nullable: true,
+    })
+    media?: Buffer,
+    @Args('mediaType', {
+      type: () => String,
+      description:
+        'The mimetype for the media. If media is set, this is required.',
+      nullable: true,
+    })
+    mediaType?: string,
+  ) {
+    if (!user || !user.sub) {
+      throw new HttpException('Forbidden', 403);
+    }
+
+    if (media && !mediaType) {
+      throw new HttpException('mediaType is required when media is set', 400);
+    }
+
+    const post = await this.posts.create({
+      text,
+      parentId,
+      userId: user.sub,
+      mediaBuffer: media,
+      mediaType: mediaType,
+    });
+
+    return mapPostResult(user)(post);
   }
 
   @UseGuards(ZitadelGraphqlAuthGuard)
