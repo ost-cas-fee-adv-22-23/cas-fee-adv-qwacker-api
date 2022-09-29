@@ -1,4 +1,4 @@
-name: Shared Infrastructure
+name: Deploy Shared Infrastructure
 
 on:
   push:
@@ -13,12 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v0'
+      - name: Google Cloud Credentials
+        uses: google-github-actions/auth@v0
         with:
           credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
-
       - uses: hashicorp/setup-terraform@v2
       - run: terraform fmt -check
         working-directory: infrastructure/shared
