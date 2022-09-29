@@ -21,9 +21,9 @@ resource "google_storage_bucket_object" "tf-deployer-key-file" {
   content      = base64decode(google_service_account_key.tf-deployer-key.private_key)
 }
 
-resource "google_project_iam_binding" "tf-deployer-owner" {
+resource "google_project_iam_member" "tf-deployer-owner" {
   role    = "roles/owner"
-  members = ["serviceAccount:${google_service_account.tf-deployer.email}"]
+  member  = "serviceAccount:${google_service_account.tf-deployer.email}"
   project = data.google_project.project.id
 }
 
