@@ -1,4 +1,7 @@
+variable "zitadel_key_path" {
+  type = string
+}
+
 variable "release_version" {
-  type    = string
-  default = "0.0.0-development"
+  type = string
 }

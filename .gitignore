@@ -37,3 +37,5 @@ lerna-debug.log*
 # api specific
 .env*
 !.env.dist
+
+zitadel.json
