@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Create"
+  },
+  "requests": [
+    {
+      "location": "Create reply-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

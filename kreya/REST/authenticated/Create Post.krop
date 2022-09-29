@@ -1,0 +1,32 @@
+{
+  "details": {
+    "path": "/posts",
+    "method": "POST",
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "multipart/form-data"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "contentType": "multipart",
+      "content": {
+        "entries": [
+          {
+            "name": "text",
+            "type": "raw",
+            "contentType": "text",
+            "textContent": {
+              "filePath": "Create Post-request-part-1.txt"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "POST"
+}

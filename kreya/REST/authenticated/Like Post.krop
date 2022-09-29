@@ -1,0 +1,15 @@
+{
+  "details": {
+    "path": "/posts/01GDJVP86V92ED0VAWFFARGWF7/likes",
+    "method": "PUT",
+    "headers": []
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "PUT"
+}

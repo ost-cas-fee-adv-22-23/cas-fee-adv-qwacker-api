@@ -1,0 +1,4 @@
+{
+  "text": "{{ faker.lorem.sentence() }}",
+  "parentId": "01GDZ18F42W64TWN0SDPD6316C"
+}

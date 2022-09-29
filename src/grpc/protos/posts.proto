@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+package posts;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+// Object for a single post result.
+// Contains base information as well as further information about the post
+// or reply.
+message PostResult {
+    // Effective post data.
+    message Post {
+        string text = 1;
+        google.protobuf.StringValue media_url = 2;
+        google.protobuf.StringValue media_type = 3;
+        uint32 like_count = 4;
+        bool liked_by_user = 5;
+        uint32 reply_count = 6;
+    }
+
+    // The post is a reply to another post.
+    message Reply {
+        string text = 1;
+        google.protobuf.StringValue media_url = 2;
+        google.protobuf.StringValue media_type = 3;
+        uint32 like_count = 4;
+        bool liked_by_user = 5;
+        string parent_id = 6;
+    }
+    // The post was deleted.
+    message Deleted {}
+    
+    // ID (ulid) of the post.
+    string id = 1;
+    // UserID of the creator.
+    string creator = 2;
+
+    // Content of the post.
+    oneof content {
+        Post post = 3;
+        Reply reply = 4;
+        Deleted deleted = 5;
+    }
+}
+
+// Service for managing posts.
+// All actions must be authenticated. Only "list", "search", and "replies"
+// can be used without authentication.
+service PostsService {
+    // Get a list of posts. The posts are ordered by the time of their
+    // creation, with the newest posts first.
+    // The list may contain deleted posts.
+    // The result is paginated.
+    rpc List(ListRequest) returns (ListResponse);
+
+    // Get a list of posts that match the given search query.
+    // The result is paginated.
+    rpc Search(SearchRequest) returns (SearchResponse);
+
+    // Get a list of replies for a given post.
+    rpc Replies(IdRequest) returns (RepliesResponse);
+
+    // Create a new post or a reply to a post.
+    // Can contain an optional image file in the form of
+    // a bytestring. The image must not be larger than 5MB.
+    rpc Create(CreateRequest) returns (PostResult);
+
+    // Mark a post as deleted, removing the text from the list.
+    rpc Delete(IdRequest) returns (google.protobuf.Empty);
+
+    // Like a specific post.
+    rpc Like(IdRequest) returns (google.protobuf.Empty);
+
+    // Unlike a specific post.
+    rpc Unlike(IdRequest) returns (google.protobuf.Empty);
+}
+
+message IdRequest {
+    // ID of the post.
+    string id = 1;
+}
+
+message CreateRequest {
+    message Image {
+        // Data of the image.
+        bytes data = 1;
+
+        // MimeType of the image.
+        string type = 2;
+    }
+    
+    // Text of the post.
+    string text = 1;
+
+    // Optional image of the post.
+    Image image = 2;
+
+    // Optional ID of the post to reply to.
+    // If omitted, a normal post is created.
+    google.protobuf.StringValue parent_id = 3;
+}
+
+message RepliesResponse {
+    repeated PostResult data = 1;
+}
+
+message ListRequest {
+    uint32 offset = 1;
+    uint32 limit = 2;
+}
+
+message ListResponse {
+    // List of posts.
+    repeated PostResult data = 1;
+
+    // Total number of posts.
+    uint32 count = 2;
+
+    // Optional request for the next page.
+    ListRequest next = 3;
+
+    // Optional request for the previous page.
+    ListRequest previous = 4;
+}
+
+message SearchRequest {
+    google.protobuf.StringValue text = 1;
+    repeated string tags = 2;
+    repeated string mentions = 3;
+    google.protobuf.BoolValue is_reply = 4;
+
+    uint32 offset = 5;
+    uint32 limit = 6;
+}
+
+message SearchResponse {
+    // List of posts.
+    repeated PostResult data = 1;
+
+    // Total number of posts.
+    uint32 count = 2;
+
+    // Optional request for the next page.
+    SearchRequest next = 3;
+
+    // Optional request for the previous page.
+    SearchRequest previous = 4;
+}

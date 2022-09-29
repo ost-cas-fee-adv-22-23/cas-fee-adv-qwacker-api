@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Unlike"
+  },
+  "requests": [
+    {
+      "location": "Unlike Post-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "2b766d06-a283-462d-bc32-2b407b620df1",
+  "importStreams": [
+    {
+      "id": "995ab63e-2170-4f77-8bdb-472f5c01a903",
+      "name": "open-api-importer",
+      "importerName": "OpenApiUrlImporter",
+      "createMissingOperations": false,
+      "options": {
+        "url": "http://localhost:3000/rest-json"
+      }
+    },
+    {
+      "id": "8f0ebc31-4edd-474b-bd33-c7c6af8b3f94",
+      "name": "proto-importer",
+      "importerName": "ProtoFile",
+      "createMissingOperations": false,
+      "options": {
+        "files": [
+          "../src/grpc/protos"
+        ],
+        "importPaths": []
+      }
+    }
+  ],
+  "authConfigs": [
+    {
+      "name": "ZITADEL",
+      "providerName": "oidc",
+      "id": "a0e07fba-715d-4855-841c-755817257725",
+      "options": {
+        "redirectUri": "http://localhost:8080/signin",
+        "clientId": "179944860378267905@cas_fee_adv_qwacker",
+        "scope": "openid profile",
+        "issuer": "https://cas-fee-advanced-ocvdad.zitadel.cloud",
+        "clientAuthMethod": "none",
+        "grantType": "authorizationCode"
+      }
+    }
+  ],
+  "certificates": []
+}

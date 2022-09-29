@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Search"
+  },
+  "requests": [
+    {
+      "location": "Search Posts-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

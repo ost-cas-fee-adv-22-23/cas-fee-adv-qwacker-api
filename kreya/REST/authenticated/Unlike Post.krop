@@ -1,0 +1,15 @@
+{
+  "details": {
+    "path": "/posts/01GDJVH5D9HXB9F0DZ8HHXSD90/likes",
+    "method": "DELETE",
+    "headers": []
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "DELETE"
+}

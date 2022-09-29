@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Delete"
+  },
+  "requests": [
+    {
+      "location": "Delete Post-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

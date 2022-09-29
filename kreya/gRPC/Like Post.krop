@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Like"
+  },
+  "requests": [
+    {
+      "location": "Like Post-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

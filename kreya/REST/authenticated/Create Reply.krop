@@ -1,0 +1,32 @@
+{
+  "details": {
+    "path": "/posts/01GDN25B7MYWYT2EVDP0623XS3",
+    "method": "POST",
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "multipart/form-data"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "contentType": "multipart",
+      "content": {
+        "entries": [
+          {
+            "name": "text",
+            "type": "raw",
+            "contentType": "text",
+            "textContent": {
+              "filePath": "Create Reply-request-part-1.txt"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "POST"
+}
