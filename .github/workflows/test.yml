@@ -27,7 +27,7 @@ jobs:
       - run: terraform init
         working-directory: infrastructure/${{ matrix.deployment }}
       - id: validate
-        run: terraform validate
+        run: terraform validate -no-color
         working-directory: infrastructure/${{ matrix.deployment }}
       - id: plan
         run: terraform plan -no-color
