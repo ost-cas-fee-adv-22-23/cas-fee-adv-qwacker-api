@@ -38,13 +38,13 @@ jobs:
           echo "<details>" >> $GITHUB_STEP_SUMMARY
           echo "<summary>Validation</summary>" >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.validate.outputs.stdout }}" >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.validate.outputs.stdout || steps.validate.outputs.stderr }}'' >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
           echo "</details>" >> $GITHUB_STEP_SUMMARY
           echo "<details>" >> $GITHUB_STEP_SUMMARY
           echo "<summary>Plan</summary>" >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.plan.outputs.stdout }}" >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.plan.outputs.stdout || steps.plan.outputs.stderr }}'' >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
           echo "</details>" >> $GITHUB_STEP_SUMMARY
 
