@@ -9,7 +9,7 @@ on:
 
 jobs:
   plan_infrastructure:
-    name: Plan infrastructure '${{ matrix.deployment }}'
+    name: Plan infrastructure ${{ matrix.deployment }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
