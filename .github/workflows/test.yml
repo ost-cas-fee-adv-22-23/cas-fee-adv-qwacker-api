@@ -1,4 +1,4 @@
-name: Testing
+name: Testing and Planing
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_infrastructure:
-    name: Test infrastructure ${{ matrix.deployment }}
+    name: Test and plan infrastructure ${{ matrix.deployment }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -17,13 +17,36 @@ jobs:
           - shared
     steps:
       - uses: actions/checkout@v3
+      - name: Google Cloud Credentials
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
       - uses: hashicorp/setup-terraform@v2
       - run: terraform fmt -check
         working-directory: infrastructure/${{ matrix.deployment }}
       - run: terraform init
         working-directory: infrastructure/${{ matrix.deployment }}
-      - run: terraform validate
+      - id: validate
+        run: terraform validate
         working-directory: infrastructure/${{ matrix.deployment }}
+      - id: plan
+        run: terraform plan
+        working-directory: infrastructure/${{ matrix.deployment }}
+      - name: Write planning summary
+        run: |
+          echo "### Terraform Summary for Environment '${{ matrix.deployment }}'" >> $GITHUB_STEP_SUMMARY
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>Validation</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.validate.outputs.stdout }}" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>Plan</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.plan.outputs.stdout }}" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
 
   test_api:
     name: Test API
