@@ -1,0 +1,8 @@
+node_modules/
+.github/
+dist/
+infrastructure/
+.env*
+kreya/
+test/
+Dockerfile

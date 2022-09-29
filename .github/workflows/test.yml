@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_infrastructure:
-    name: Test infrastructure '${{ matrix.deployment }}'
+    name: Test infrastructure ${{ matrix.deployment }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
