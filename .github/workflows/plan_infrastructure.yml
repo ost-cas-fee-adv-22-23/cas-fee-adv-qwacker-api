@@ -1,0 +1,76 @@
+name: Plan Infrastructure Changes
+
+on:
+  pull_request:
+    branches:
+      - '**'
+    # paths:
+    #   - infrastructure/**.tf
+
+jobs:
+  plan_infrastructure:
+    name: Plan infrastructure '${{ matrix.deployment }}'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        deployment:
+          # - prod
+          - shared
+    steps:
+      - uses: actions/checkout@v3
+      - name: Google Cloud Credentials
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform init
+        working-directory: infrastructure/${{ matrix.deployment }}
+      - id: plan
+        run: terraform plan -no-color
+        working-directory: infrastructure/${{ matrix.deployment }}
+        continue-on-error: true
+      - uses: actions/github-script@v6
+        env:
+          PLAN: '${{ steps.plan.outputs.stdout || steps.plan.outputs.stderr }}'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // 1. Retrieve existing bot comments for the PR
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            const botComment = comments.find(comment => {
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan')
+            })
+
+            // 2. Prepare format of the comment
+            const output = `### Terraform Environment "${{ matrix.deployment }}"
+            #### Terraform Plan \`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>`;
+
+            // 3. If we have a comment, update it, otherwise create a new one
+            if (botComment) {
+              github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: output
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+              })
+            }

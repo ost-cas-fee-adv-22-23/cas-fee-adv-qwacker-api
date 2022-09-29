@@ -1,62 +1,43 @@
-name: Testing and Planing
+# name: Testing
 
-on:
-  pull_request:
-    branches:
-      - '**'
+# on:
+#   pull_request:
+#     branches:
+#       - '**'
 
-jobs:
-  test_infrastructure:
-    name: Test and plan infrastructure ${{ matrix.deployment }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        deployment:
-          - prod
-          - shared
-    steps:
-      - uses: actions/checkout@v3
-      - name: Google Cloud Credentials
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
-      - uses: hashicorp/setup-terraform@v2
-      - run: terraform fmt -check
-        working-directory: infrastructure/${{ matrix.deployment }}
-      - run: terraform init
-        working-directory: infrastructure/${{ matrix.deployment }}
-      - id: validate
-        run: terraform validate -no-color
-        working-directory: infrastructure/${{ matrix.deployment }}
-      - id: plan
-        run: terraform plan -no-color
-        working-directory: infrastructure/${{ matrix.deployment }}
-      - name: Write planning summary
-        run: |
-          echo "### Terraform Summary for Environment '${{ matrix.deployment }}'" >> $GITHUB_STEP_SUMMARY
-          echo "<details>" >> $GITHUB_STEP_SUMMARY
-          echo "<summary>Validation</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
-          echo -e '${{ steps.validate.outputs.stdout || steps.validate.outputs.stderr }}' >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
-          echo "<details>" >> $GITHUB_STEP_SUMMARY
-          echo "<summary>Plan</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
-          echo -e '${{ steps.plan.outputs.stdout || steps.plan.outputs.stderr }}' >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
+# jobs:
+#   test_infrastructure:
+#     name: Test infrastructure '${{ matrix.deployment }}'
+#     runs-on: ubuntu-latest
+#     strategy:
+#       fail-fast: true
+#       matrix:
+#         deployment:
+#           - prod
+#           - shared
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Google Cloud Credentials
+#         uses: google-github-actions/auth@v0
+#         with:
+#           credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
+#       - uses: hashicorp/setup-terraform@v2
+#       - run: terraform fmt -check
+#         working-directory: infrastructure/${{ matrix.deployment }}
+#       - run: terraform init
+#         working-directory: infrastructure/${{ matrix.deployment }}
+#       - run: terraform validate
+#         working-directory: infrastructure/${{ matrix.deployment }}
 
-  test_api:
-    name: Test API
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run build
-      # - run: npm test # -> later with testing?
+#   test_api:
+#     name: Test API
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+#       - run: npm ci
+#       - run: npm run lint
+#       - run: npm run build
+#       # - run: npm test # -> later with testing?
