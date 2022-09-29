@@ -27,10 +27,6 @@ resource "google_project_iam_binding" "tf-deployer-owner" {
   project = data.google_project.project.id
 }
 
-output "tf-deployer-key-path" {
-  value = google_storage_bucket_object.tf-deployer-key-file.media_link
-}
-
 output "tf-deployer-email" {
   value = google_service_account.tf-deployer.email
 }

@@ -1,0 +1,30 @@
+name: Shared Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infrastructure/shared/*.tf
+
+jobs:
+  deploy:
+    name: Deploy shared infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.TF_DEPLOYER_KEY }}'
+
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform fmt -check
+        working-directory: infrastructure/shared
+      - run: terraform init
+        working-directory: infrastructure/shared
+      - run: terraform validate
+        working-directory: infrastructure/shared
+      - run: terraform apply -auto-approve
+        working-directory: infrastructure/shared
