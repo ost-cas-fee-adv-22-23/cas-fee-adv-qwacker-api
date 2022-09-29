@@ -14,7 +14,7 @@ This API delivers the "big three" possiblities of accessing a web API:
 Most calls to the API are required to be authenticated by
 [ZITADEL](https://zitadel.com). Accessing the list of "posts" or
 the "search" is possible without authentication. To create, like, unlike,
-or delete a post, the user must be authenticated. The authentication
+or delete a post (or a reply), the user must be authenticated. The authentication
 is done via OIDC and the API expects a valid JWT token in the
 `HTTP Authoriztaion` header.
 
