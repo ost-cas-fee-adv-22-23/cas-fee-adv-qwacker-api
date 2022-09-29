@@ -4,8 +4,8 @@ on:
   pull_request:
     branches:
       - '**'
-    # paths:
-    #   - infrastructure/**.tf
+    paths:
+      - infrastructure/**.tf
 
 jobs:
   plan_infrastructure:
