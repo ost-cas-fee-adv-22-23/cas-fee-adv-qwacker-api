@@ -43,7 +43,7 @@ jobs:
               issue_number: context.issue.number,
             })
             const botComment = comments.find(comment => {
-              return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan')
+              return comment.user.type === 'Bot' && comment.body.includes('Terraform Environment Changes "${{ matrix.deployment }}"')
             })
 
             // 2. Prepare format of the comment
