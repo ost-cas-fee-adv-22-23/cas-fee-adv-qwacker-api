@@ -26,10 +26,16 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - run: terraform init
         working-directory: infrastructure/${{ matrix.deployment }}
+      - name: store zitadel access key
+        run: echo '${{ secrets.ZITADEL_TF_DEPLOYER_KEY }}' > ./zitadel.json
+        working-directory: infrastructure/prod
       - id: plan
         run: terraform plan -no-color
         working-directory: infrastructure/${{ matrix.deployment }}
         continue-on-error: true
+        env:
+          TF_VAR_release_version: 0.0.0-plan-preview
+          TF_VAR_zitadel_key_path: zitadel.json
       - uses: actions/github-script@v6
         env:
           PLAN: '${{ steps.plan.outputs.stdout || steps.plan.outputs.stderr }}'
