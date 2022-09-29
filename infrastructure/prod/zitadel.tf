@@ -1,6 +1,7 @@
 resource "zitadel_project" "project" {
-  name   = "CAS FEE ADV qwacker ${local.env}"
-  org_id = local.zitadel_org_id
+  name                     = "CAS FEE ADV qwacker ${local.env}"
+  org_id                   = local.zitadel_org_id
+  private_labeling_setting = "PRIVATE_LABELING_SETTING_UNSPECIFIED"
 }
 
 resource "zitadel_application_api" "api" {
