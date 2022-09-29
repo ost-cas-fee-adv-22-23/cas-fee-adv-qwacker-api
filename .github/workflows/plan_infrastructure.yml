@@ -15,7 +15,7 @@ jobs:
       fail-fast: true
       matrix:
         deployment:
-          # - prod
+          - prod
           - shared
     steps:
       - uses: actions/checkout@v3
@@ -47,13 +47,13 @@ jobs:
             })
 
             // 2. Prepare format of the comment
-            const output = `### Terraform Environment "${{ matrix.deployment }}"
+            const output = `### Terraform Environment Changes "${{ matrix.deployment }}"
             #### Terraform Plan \`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
 
             \`\`\`\n
-            ${process.env.PLAN}
+            ${(process.env.PLAN || '').substr(-60000)}
             \`\`\`
 
             </details>`;
