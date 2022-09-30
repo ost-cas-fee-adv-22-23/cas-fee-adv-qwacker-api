@@ -1,6 +1,12 @@
 {
   "settings": [
     {
+      "environmentId": "9c13be12-2a68-4477-b3e7-803e4d384009",
+      "authId": "ec477734-add2-498b-8c2f-7bb0966711ba",
+      "options": {}
+    },
+    {
+      "environmentId": "a3568807-a253-4cbe-a11f-e73daa903aa9",
       "authId": "a0e07fba-715d-4855-841c-755817257725",
       "options": {}
     }

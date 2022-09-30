@@ -1,9 +1,20 @@
 {
   "settings": [
     {
+      "options": {
+        "grpc": {
+          "mode": "grpcWeb"
+        }
+      }
+    },
+    {
       "environmentId": "9c13be12-2a68-4477-b3e7-803e4d384009",
       "authId": "ec477734-add2-498b-8c2f-7bb0966711ba",
-      "options": {}
+      "options": {
+        "grpc": {
+          "endpoint": "https://qwacker-api-grpcwebproxy-prod-4cxdci3drq-oa.a.run.app"
+        }
+      }
     },
     {
       "environmentId": "a3568807-a253-4cbe-a11f-e73daa903aa9",

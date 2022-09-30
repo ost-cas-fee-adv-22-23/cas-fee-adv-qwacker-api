@@ -1,0 +1,5 @@
+{
+  "operationName": null,
+  "variables": {},
+  "query": "query{list {count,data {__typename,... on Post {id,creator,text,}}}}"
+}

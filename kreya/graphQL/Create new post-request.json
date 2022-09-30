@@ -1,0 +1,5 @@
+{
+  "operationName": null,
+  "variables": {},
+  "query": "mutation {create(text:\"{{ faker.lorem.sentence() }}\"){... on Post {id}}}"
+}
