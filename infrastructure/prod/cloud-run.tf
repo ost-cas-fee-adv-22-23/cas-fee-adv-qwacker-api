@@ -127,6 +127,39 @@ resource "google_cloud_run_service" "api" {
   ]
 }
 
+resource "google_cloud_run_service" "grpcwebproxy" {
+  name                       = "${local.name}-grpcwebproxy-${local.env}"
+  location                   = local.gcp_region
+  autogenerate_revision_name = true
+
+  template {
+    spec {
+      containers {
+        image = "europe-west6-docker.pkg.dev/ost-cas-adv-fee/qwacker-api-docker/cas-fee-adv-qwacker-grpcwebproxy:${var.release_version}"
+
+        args = [
+          "--allow_all_origins",
+          "--backend_tls=true",
+          "--run_tls_server=false",
+          "--backend_addr=${replace(google_cloud_run_service.api["grpc"].status[0].url, "https://", "")}:443"
+        ]
+
+        ports {
+          name           = "http1"
+          container_port = 8080
+        }
+      }
+
+      service_account_name = data.terraform_remote_state.shared.outputs.cloud-runner-email
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+
 data "google_iam_policy" "noauth" {
   binding {
     role = "roles/run.invoker"
@@ -138,8 +171,9 @@ data "google_iam_policy" "noauth" {
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
   for_each = {
-    http = google_cloud_run_service.api["http"],
-    grpc = google_cloud_run_service.api["grpc"],
+    http    = google_cloud_run_service.api["http"],
+    grpc    = google_cloud_run_service.api["grpc"],
+    grpcweb = google_cloud_run_service.grpcwebproxy,
   }
 
   location = each.value.location
