@@ -40,4 +40,4 @@ RUN npm ci
 
 COPY --from=build /app/dist ./dist
 
-CMD npm run typeorm:migrations && npm run start:prod
+CMD npm run start:prod
