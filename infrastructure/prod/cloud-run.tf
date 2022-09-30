@@ -23,7 +23,7 @@ resource "google_cloud_run_service" "api" {
 
     spec {
       containers {
-        image = "ghcr.io/smartive-education/cas-fee-adv-qwacker-api:${var.release_version}"
+        image = "europe-west6-docker.pkg.dev/ost-cas-adv-fee/qwacker-api-docker/cas-fee-adv-qwacker-api:${var.release_version}"
 
         resources {
           limits = {
