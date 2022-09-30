@@ -17,7 +17,7 @@ async function bootstrap() {
   const grpcOptions: GrpcOptions = {
     transport: Transport.GRPC,
     options: {
-      url: `127.0.0.1:${config.get<number>('GRPC_PORT')}`,
+      url: `0.0.0.0:${config.get<number>('GRPC_PORT')}`,
       package: ['posts'],
       protoPath: join(__dirname, './grpc/protos/posts.proto'),
       loader: { keepCase: true },
