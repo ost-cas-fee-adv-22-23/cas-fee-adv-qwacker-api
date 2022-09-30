@@ -48,7 +48,7 @@ resource "google_cloud_run_service" "api" {
 
         env {
           name  = "DATABASE_HOST"
-          value = data.terraform_remote_state.shared.outputs.pgsql-db-instance-connection-name
+          value = "/cloudsql/${data.terraform_remote_state.shared.outputs.pgsql-db-instance-connection-name}"
         }
 
         env {
