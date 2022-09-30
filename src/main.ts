@@ -11,18 +11,25 @@ import { description, version } from '../package.json';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const { log } = console;
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   const config = app.get<ConfigService>(ConfigService);
 
   const grpcOptions: GrpcOptions = {
     transport: Transport.GRPC,
     options: {
-      url: `0.0.0.0:${config.get<number>('GRPC_PORT')}`,
+      url: `0.0.0.0:${config.getOrThrow<number>('GRPC_PORT')}`,
       package: ['posts'],
       protoPath: join(__dirname, './grpc/protos/posts.proto'),
       loader: { keepCase: true },
     },
   };
+  log(
+    `attach gRPC service on address 0.0.0.0:${config.getOrThrow<number>(
+      'GRPC_PORT',
+    )}`,
+  );
   app.connectMicroservice<MicroserviceOptions>(grpcOptions);
 
   const swagger = new DocumentBuilder()
@@ -60,6 +67,11 @@ async function bootstrap() {
   SwaggerModule.setup('rest', app, document);
 
   await app.startAllMicroservices();
-  await app.listen(config.get<number>('HTTP_PORT') ?? 3000);
+  log(
+    `started all microservices and start listening on port ${config.getOrThrow<number>(
+      'HTTP_PORT',
+    )}`,
+  );
+  await app.listen(config.getOrThrow<number>('HTTP_PORT') ?? 3000);
 }
 bootstrap();

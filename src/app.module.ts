@@ -38,6 +38,8 @@ import { RestModule } from './rest/rest.module';
       sortSchema: true,
       debug: false,
       playground: true,
+      introspection: true,
+      cors: true,
       resolvers: {
         Byte: ByteResolver,
       },
