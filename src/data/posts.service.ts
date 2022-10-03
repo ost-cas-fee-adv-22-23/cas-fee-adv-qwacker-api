@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AggregatedPost, Like, Post } from 'src/entities';
-import { Brackets, IsNull, Repository } from 'typeorm';
+import { Brackets, IsNull, MoreThan, Repository } from 'typeorm';
 import { CreateParams, SearchParams } from './data.models';
 import { MediaService } from './media.service';
 
@@ -24,7 +24,7 @@ export class PostsService {
    * Fetch a list of aggregated posts (not replies).
    * Also returns deleted posts.
    */
-  async list(offset: number, limit: number) {
+  async list(offset: number, limit: number, newerThan?: string) {
     limit = clamp(limit, 1, 1000);
     const [posts, count] = await this.aggregatedPosts.findAndCount({
       skip: offset,
@@ -34,6 +34,7 @@ export class PostsService {
       },
       where: {
         parentId: IsNull(),
+        id: newerThan ? MoreThan(newerThan) : undefined,
       },
     });
     return { posts, count };

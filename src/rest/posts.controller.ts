@@ -80,6 +80,13 @@ export class PostsController {
       'The amount of posts that is returned in one call. Minimum is 1, maximum is 1000.',
     example: 500,
   })
+  @ApiQuery({
+    name: 'newerThan',
+    required: false,
+    description:
+      'The ID of a post, to only return posts that are newer than the given post.',
+    example: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+  })
   @ApiProduces('application/json')
   @ApiResponse({
     status: 200,
@@ -122,8 +129,9 @@ export class PostsController {
     @Req() req: Request,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
     @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
+    @Query('newerThan') newerThan?: string,
   ): Promise<PaginatedResult<PostResult>> {
-    const { count, posts } = await this.posts.list(offset, limit);
+    const { count, posts } = await this.posts.list(offset, limit, newerThan);
 
     return {
       count,

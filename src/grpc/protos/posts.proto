@@ -108,6 +108,7 @@ message RepliesResponse {
 message ListRequest {
     uint32 offset = 1;
     uint32 limit = 2;
+    string newer_than = 3;
 }
 
 message ListResponse {

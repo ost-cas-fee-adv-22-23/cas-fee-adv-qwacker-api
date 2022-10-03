@@ -59,11 +59,11 @@ export class PostsService {
   @UseGuards(OptionalZitadelGrpcAuthGuard)
   @GrpcMethod()
   async list(
-    { offset = 0, limit = 100 }: ListRequest,
+    { offset = 0, limit = 100, newer_than }: ListRequest,
     metadata: Metadata,
   ): Promise<ListResponse> {
     const user = grpcUser(metadata);
-    const { count, posts } = await this.posts.list(offset, limit);
+    const { count, posts } = await this.posts.list(offset, limit, newer_than);
     return {
       count,
       data: posts.map(mapPostResult(user)),
