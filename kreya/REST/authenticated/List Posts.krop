@@ -2,7 +2,14 @@
   "details": {
     "path": "/posts",
     "method": "GET",
-    "headers": []
+    "headers": [],
+    "queryParams": [
+      {
+        "key": "newerThan",
+        "value": "01GEET1P5QW2BTBGZD2HFDAHTH",
+        "ignored": true
+      }
+    ]
   },
   "requests": [
     {

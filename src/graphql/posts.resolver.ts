@@ -78,8 +78,14 @@ export class PostsResolver {
     })
     limit: number,
     @GqlUser() user: User,
+    @Args('newerThan', {
+      type: () => String,
+      nullable: true,
+      description: 'If set, only return posts newer than this ID.',
+    })
+    newerThan?: string,
   ): Promise<ListResult> {
-    const { count, posts } = await this.posts.list(offset, limit);
+    const { count, posts } = await this.posts.list(offset, limit, newerThan);
 
     return {
       count,
