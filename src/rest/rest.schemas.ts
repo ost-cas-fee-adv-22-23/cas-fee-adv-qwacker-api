@@ -1,4 +1,9 @@
-export const basePostSchema = {
+import {
+  ReferenceObject,
+  SchemaObject,
+} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+
+export const basePostSchema: Record<string, SchemaObject | ReferenceObject> = {
   id: {
     type: 'string',
     format: 'ulid',
@@ -46,7 +51,7 @@ export const basePostSchema = {
   },
 };
 
-export const deletedSchema = {
+export const deletedSchema: SchemaObject | ReferenceObject = {
   type: 'object',
   title: 'Delete',
   properties: {
@@ -79,7 +84,7 @@ export const deletedSchema = {
   },
 };
 
-export const postSchema = {
+export const postSchema: SchemaObject | ReferenceObject = {
   type: 'object',
   title: 'Post',
   properties: {
@@ -97,7 +102,7 @@ export const postSchema = {
   },
 };
 
-export const replySchema = {
+export const replySchema: SchemaObject | ReferenceObject = {
   type: 'object',
   title: 'Reply',
   properties: {
@@ -116,7 +121,10 @@ export const replySchema = {
   },
 };
 
-export const searchParamsSchema = {
+export const searchParamsSchema: Record<
+  string,
+  SchemaObject | ReferenceObject
+> = {
   text: {
     type: 'string',
     nullable: true,
@@ -153,7 +161,7 @@ export const searchParamsSchema = {
     type: 'number',
     nullable: true,
     default: 0,
-    example: 100,
+    example: 0,
     description: 'The offset for pagination of further calls.',
   },
   limit: {

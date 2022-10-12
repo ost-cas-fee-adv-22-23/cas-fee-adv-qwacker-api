@@ -70,22 +70,47 @@ export class PostsController {
   @ApiQuery({
     name: 'offset',
     required: false,
-    description: 'The offset for pagination of further calls.',
-    example: 100,
+    description:
+      'The offset for pagination of further calls. Defaults to 0 if omitted.',
+    examples: {
+      'from start': {
+        value: 0,
+      },
+      'skip the first 100': {
+        value: 100,
+      },
+    },
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     description:
-      'The amount of posts that is returned in one call. Minimum is 1, maximum is 1000.',
-    example: 500,
+      'The amount of posts that is returned in one call. Minimum is 1, maximum is 1000. Defaults to 100.',
+    examples: {
+      default: {
+        value: 100,
+      },
+      minimum: {
+        value: 1,
+      },
+      maximum: {
+        value: 1000,
+      },
+    },
   })
   @ApiQuery({
     name: 'newerThan',
     required: false,
     description:
-      'The ID of a post, to only return posts that are newer than the given post.',
-    example: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+      'The ID of a post, to only return posts that are newer than the given post. If omitted, all posts are returned.',
+    examples: {
+      'all posts': {
+        value: undefined,
+      },
+      'posts newer than a given post': {
+        value: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+      },
+    },
   })
   @ApiProduces('application/json')
   @ApiResponse({
@@ -158,7 +183,11 @@ export class PostsController {
   @ApiOperation({
     description: 'Get an ordered list of replies for the given post.',
   })
-  @ApiParam({ name: 'id', description: 'The ID (ulid) of the post to like.' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID (ulid) of the post to get the replies from.',
+    example: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+  })
   @ApiProduces('application/json')
   @ApiResponse({
     status: 200,
