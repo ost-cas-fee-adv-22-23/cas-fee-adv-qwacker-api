@@ -85,3 +85,12 @@ However, if you use gRPC in the browser, some native gRPC functions are not avai
 To use the gRPC API in the browser, you need to use a [gRPC Web](https://github.com/grpc/grpc-web) client.
 The endpoint for gRPC Web based clients is
 [`https://qwacker-api-grpcwebproxy-prod-4cxdci3drq-oa.a.run.app`](https://qwacker-api-grpcwebproxy-prod-4cxdci3drq-oa.a.run.app).
+
+## Development
+
+If you want to develop on this API, follow the instructions below.
+
+1. Clone the repository
+2. Install the dependencies with `npm install`
+3. Generate the gRPC files with `npm run grpc:types`
+4. Start the API with `npm run start:dev`
