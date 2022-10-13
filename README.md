@@ -55,7 +55,7 @@ the ZITADEL instance:
 | Discovery Endpoint  | `https://cas-fee-advanced-ocvdad.zitadel.cloud/.well-known/openid-configuration`                                                                             |
 | Client ID           | `181236603920908545@cas_fee_adv_qwacker_prod`                                                                                                                |
 | Use PKCE            | `true`                                                                                                                                                       |
-| Redirect Return URL | One of the following:<br><br>- http://localhost/signin<br>- http://localhost:3000/signin<br>- http://localhost:5000/signin<br>- http://localhost:8080/signin |
+| Redirect Return URL | One of the following:<br><br>- http://localhost/signin<br>- http://localhost:3000/signin<br>- http://localhost:5000/signin<br>- http://localhost:8080/signin<br>- http://localhost:3000/api/auth/callback/zitadel |
 
 When first encountering the login screen, if no account exists, you may register a new account.
 
