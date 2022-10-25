@@ -138,6 +138,8 @@ resource "google_cloud_run_service" "api" {
     google_secret_manager_secret_iam_member.storage-access,
     google_secret_manager_secret_version.api-auth-jwt,
     google_secret_manager_secret_iam_member.api-auth-jwt,
+    google_secret_manager_secret_version.api-access-pat,
+    google_secret_manager_secret_iam_member.api-access-pat,
   ]
 }
 
