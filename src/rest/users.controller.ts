@@ -17,8 +17,9 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { stringify } from 'qs';
+import { User } from 'src/auth/user';
 import { UsersService, ZitadelUser } from 'src/data/users.service';
-import { ZitadelAuthGuard } from './rest.guard';
+import { RestUser, ZitadelAuthGuard } from './rest.guard';
 import { PaginatedResult } from './rest.models';
 import { userSchema } from './rest.schemas';
 
@@ -125,6 +126,28 @@ export class UsersController {
               limit: limit,
             })}`
           : undefined,
+    };
+  }
+
+  @Get('me')
+  @ApiOperation({
+    description: 'Fetch your own authenticated profile.',
+  })
+  @ApiProduces('application/json')
+  @ApiResponse({
+    status: 200,
+    description: 'Your own profile.',
+    schema: {
+      ...userSchema,
+    },
+  })
+  async me(@RestUser() user: User) {
+    return {
+      id: user?.sub,
+      userName: user?.username?.replace('@smartive.zitadel.cloud', ''),
+      avatarUrl: user?.picture,
+      firstName: user?.given_name,
+      lastName: user?.family_name,
     };
   }
 }
