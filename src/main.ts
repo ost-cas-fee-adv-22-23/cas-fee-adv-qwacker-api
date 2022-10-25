@@ -43,6 +43,10 @@ async function bootstrap() {
       'All related endpoints for posts. Allows creating, deleting, replying and searching.',
     )
     .addTag('Likes', 'Like and unlike posts.')
+    .addTag(
+      'Users',
+      'User related calls. Fetch information about users in the system.',
+    )
     .addBearerAuth(
       {
         type: 'openIdConnect',

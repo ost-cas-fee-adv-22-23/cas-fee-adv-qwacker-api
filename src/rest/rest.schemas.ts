@@ -102,6 +102,39 @@ export const postSchema: SchemaObject | ReferenceObject = {
   },
 };
 
+export const userSchema: SchemaObject | ReferenceObject = {
+  type: 'object',
+  title: 'User',
+  properties: {
+    id: {
+      type: 'string',
+      description: 'The (long) ID of the user.',
+      example: '179828644301046017',
+    },
+    userName: {
+      type: 'string',
+      description:
+        'The username of the user. May be used to mention someone in the posts.',
+      example: 'johnDoe',
+    },
+    firstName: {
+      type: 'string',
+      description: 'The first name of the user.',
+      example: 'John',
+    },
+    lastName: {
+      type: 'string',
+      description: 'The last name of the user.',
+      example: 'Doe',
+    },
+    avatarUrl: {
+      type: 'string',
+      description:
+        'URL to the avatar of the user. This field may be empty (empty string).',
+    },
+  },
+};
+
 export const replySchema: SchemaObject | ReferenceObject = {
   type: 'object',
   title: 'Reply',
