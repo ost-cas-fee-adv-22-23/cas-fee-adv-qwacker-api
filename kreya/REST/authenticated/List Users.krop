@@ -1,0 +1,27 @@
+{
+  "details": {
+    "path": "/users",
+    "method": "GET",
+    "headers": [],
+    "queryParams": [
+      {
+        "key": "limit",
+        "value": "1",
+        "ignored": true
+      },
+      {
+        "key": "offset",
+        "value": "1",
+        "ignored": true
+      }
+    ]
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "GET"
+}

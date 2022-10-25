@@ -23,7 +23,7 @@
     "typeorm": "typeorm-ts-node-commonjs -d datasource.ts",
     "typeorm:migrations": "typeorm migration:run -d dist/datasource.prod.js",
     "pregrpc:types": "rimraf src/grpc/gen",
-    "grpc:types": "proto-loader-gen-types --longs=String --enums=String --keepCase --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/grpc/gen/ src/grpc/protos/posts.proto"
+    "grpc:types": "proto-loader-gen-types --longs=String --enums=String --keepCase --defaults --oneofs --grpcLib=@grpc/grpc-js --outDir=src/grpc/gen/ src/grpc/protos/posts.proto src/grpc/protos/users.proto"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.5.2",

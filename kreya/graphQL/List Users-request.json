@@ -1,0 +1,5 @@
+{
+  "operationName": null,
+  "variables": {},
+  "query": "query { users { data { id userName firstName lastName } } }"
+}

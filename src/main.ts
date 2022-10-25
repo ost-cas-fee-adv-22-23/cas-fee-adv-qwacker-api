@@ -20,8 +20,11 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:${config.getOrThrow<number>('GRPC_PORT')}`,
-      package: ['posts'],
-      protoPath: join(__dirname, './grpc/protos/posts.proto'),
+      package: ['posts', 'users'],
+      protoPath: [
+        join(__dirname, './grpc/protos/posts.proto'),
+        join(__dirname, './grpc/protos/users.proto'),
+      ],
       loader: { keepCase: true },
     },
   };

@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package users;
+
+// import "google/protobuf/empty.proto";
+
+// User object in the system. Can be fetched
+// to reference users in posts or to show
+// user information.
+message User {
+    // The ID of the user.
+    string id = 1;
+
+    // The user name of the user.
+    string user_name = 2;
+
+    // The first name of the user.
+    string first_name = 3;
+
+    // The last name of the user.
+    string last_name = 4;
+
+    // The optional avatar URL of the user.
+    // This may be an empty string if the user has no avatar.
+    string avatar_url = 5;
+}
+
+service UsersService {
+    // Get a list of users. The users are ordered by username
+    // The result is paginated.
+    rpc List(ListRequest) returns (ListResponse);
+
+    // Get the authenticated own user.
+    // rpc Me(google.protobuf.Empty) returns (User);
+}
+
+message ListRequest {
+    uint32 offset = 1;
+    uint32 limit = 2;
+    string newer_than = 3;
+}
+
+message ListResponse {
+    // List of posts.
+    repeated User data = 1;
+
+    // Total number of posts.
+    uint32 count = 2;
+
+    // Optional request for the next page.
+    ListRequest next = 3;
+
+    // Optional request for the previous page.
+    ListRequest previous = 4;
+}
