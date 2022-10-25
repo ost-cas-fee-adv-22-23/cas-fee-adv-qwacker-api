@@ -1,0 +1,22 @@
+{
+  "details": {
+    "path": "/graphql",
+    "method": "POST",
+    "headers": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "location": "Get My User-request.json",
+      "contentType": "json"
+    }
+  ],
+  "authId": "a0e07fba-715d-4855-841c-755817257725",
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "POST"
+}

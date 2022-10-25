@@ -1,7 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from 'src/data/users.service';
-import { ZitadelGraphqlAuthGuard } from './graphql.guard';
+import { User as AuthUser } from '../auth/user';
+import { GqlUser, ZitadelGraphqlAuthGuard } from './graphql.guard';
 import { User, UserListResult } from './graphql.models';
 
 @UseGuards(ZitadelGraphqlAuthGuard)
@@ -37,5 +38,19 @@ export class UsersResolver {
       nextPageOffset: count > offset + limit ? offset + limit : undefined,
       previousPageOffset: offset > 0 ? Math.max(offset - limit, 0) : undefined,
     };
+  }
+
+  @Query(() => User, {
+    name: 'me',
+    description: 'Get your own authenticated profile.',
+  })
+  async me(@GqlUser() user: AuthUser): Promise<User> {
+    return {
+      id: user?.sub,
+      userName: user?.username?.replace('@smartive.zitadel.cloud', ''),
+      avatarUrl: user?.picture,
+      firstName: user?.given_name,
+      lastName: user?.family_name,
+    } as User;
   }
 }
