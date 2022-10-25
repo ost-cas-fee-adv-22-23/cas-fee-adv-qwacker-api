@@ -106,6 +106,20 @@ resource "google_cloud_run_service" "api" {
           }
         }
 
+        env {
+          name  = "ZITADEL_URL"
+          value = "https://${local.zitadel_issuer}"
+        }
+
+        env {
+          name = "ZITADEL_PAT"
+          value_from {
+            secret_key_ref {
+              key  = "latest"
+              name = google_secret_manager_secret.api-access-pat.secret_id
+            }
+          }
+        }
       }
 
       service_account_name = data.terraform_remote_state.shared.outputs.cloud-runner-email

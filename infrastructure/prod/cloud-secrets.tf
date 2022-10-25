@@ -66,3 +66,26 @@ resource "google_secret_manager_secret_iam_member" "api-auth-jwt" {
     google_secret_manager_secret.api-auth-jwt,
   ]
 }
+
+# Secret API Access PAT
+resource "google_secret_manager_secret" "api-access-pat" {
+  secret_id = "${local.name}-${local.env}-api-access-pat"
+
+  replication {
+    automatic = true
+  }
+}
+
+resource "google_secret_manager_secret_version" "api-access-pat" {
+  secret      = google_secret_manager_secret.api-access-pat.name
+  secret_data = zitadel_personal_access_token.api-access.token
+}
+
+resource "google_secret_manager_secret_iam_member" "api-access-pat" {
+  secret_id = google_secret_manager_secret_version.api-access-pat.id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${data.terraform_remote_state.shared.outputs.cloud-runner-email}"
+  depends_on = [
+    google_secret_manager_secret.api-access-pat,
+  ]
+}
