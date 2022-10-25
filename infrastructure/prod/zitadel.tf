@@ -6,8 +6,6 @@ resource "zitadel_machine_user" "api-access" {
 }
 
 resource "zitadel_personal_access_token" "api-access" {
-  depends_on = [zitadel_machine_user.machine_user, zitadel_org.org]
-
   org_id          = local.zitadel_org_id
   user_id         = zitadel_machine_user.api-access.id
   expiration_date = "2100-01-01T00:00:00Z"
