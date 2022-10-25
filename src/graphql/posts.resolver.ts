@@ -59,7 +59,7 @@ export class PostsResolver {
 
   @UseGuards(OptionalZitadelGraphqlAuthGuard)
   @Query(() => ListResult, {
-    name: 'list',
+    name: 'posts',
     description:
       'Query a list of posts defined by the pagination params. The list is ordered by the creation time of the posts. The list may contain deleted posts, but no replies.',
   })

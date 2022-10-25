@@ -63,6 +63,52 @@ export class DeletedPost {
   creator: string;
 }
 
+@ObjectType({
+  description: 'The result of a user list query.',
+})
+export class UserListResult {
+  @Field(() => Int, { description: 'Total number of users in the system.' })
+  count: number;
+
+  @Field(() => [User])
+  data: User[];
+
+  @Field(() => Int, {
+    nullable: true,
+    description: 'If set, shows the offset of the next page.',
+  })
+  nextPageOffset?: number;
+
+  @Field(() => Int, {
+    nullable: true,
+    description: 'If set, shows the offset of the previous page.',
+  })
+  previousPageOffset?: number;
+}
+
+@ObjectType({
+  description: 'A user in the system.',
+})
+export class User {
+  @Field(() => ID, { description: 'The ID of the user.' })
+  id: string;
+
+  @Field(() => String, { description: 'The userName of the user.' })
+  userName: string;
+
+  @Field(() => String, { description: 'The first name of the user.' })
+  firstName: string;
+
+  @Field(() => String, { description: 'The last name of the user.' })
+  lastName: string;
+
+  @Field(() => String, {
+    description:
+      'The (optional) avatar URL of the user. May be an empty string.',
+  })
+  avatarUrl: string;
+}
+
 @ObjectType({ isAbstract: true })
 class NonDeletedPostBase extends DeletedPost {
   @Field(() => String)
