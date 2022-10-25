@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package users;
 
-// import "google/protobuf/empty.proto";
+import "google/protobuf/empty.proto";
 
 // User object in the system. Can be fetched
 // to reference users in posts or to show
@@ -31,7 +31,7 @@ service UsersService {
     rpc List(ListRequest) returns (ListResponse);
 
     // Get the authenticated own user.
-    // rpc Me(google.protobuf.Empty) returns (User);
+    rpc Me(google.protobuf.Empty) returns (User);
 }
 
 message ListRequest {

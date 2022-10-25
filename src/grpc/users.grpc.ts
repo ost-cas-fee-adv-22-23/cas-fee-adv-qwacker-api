@@ -6,6 +6,7 @@ import {
   UsersService as DataUsersService,
   ZitadelUser,
 } from '../data/users.service';
+import { Empty } from './gen/google/protobuf/Empty';
 import { ListRequest } from './gen/users/ListRequest';
 import { ListResponse } from './gen/users/ListResponse';
 import { User as GrpcUser } from './gen/users/User';
@@ -50,20 +51,16 @@ export class UsersService {
     };
   }
 
-  // @GrpcMethod()
-  // async replies(
-  //   { id }: IdRequest,
-  //   metadata: Metadata,
-  // ): Promise<RepliesResponse> {
-  //   if (!id) {
-  //     throw new RpcException('id is required');
-  //   }
+  @GrpcMethod()
+  async me(_: Empty, metadata: Metadata): Promise<GrpcUser> {
+    const user = grpcUser(metadata);
 
-  //   const user = grpcUser(metadata);
-  //   const { replies } = await this.users.getPostWithReplies(id);
-
-  //   return {
-  //     data: replies.map(mapPostResult(user)),
-  //   };
-  // }
+    return {
+      id: user?.sub,
+      user_name: user?.username?.replace('@smartive.zitadel.cloud', ''),
+      avatar_url: user?.picture,
+      first_name: user?.given_name,
+      last_name: user?.family_name,
+    } as GrpcUser;
+  }
 }
