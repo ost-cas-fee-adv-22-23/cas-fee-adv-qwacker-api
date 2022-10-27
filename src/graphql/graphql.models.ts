@@ -30,6 +30,17 @@ export class ListResult {
   previousPageOffset?: number;
 }
 
+@ObjectType({
+  description: 'The result of a single query.',
+})
+export class SingleResult {
+  @Field(() => SinglePostResult)
+  post: typeof SinglePostResult;
+
+  @Field(() => [RepliesResult])
+  replies: Array<typeof RepliesResult>;
+}
+
 @ObjectType({ description: 'The result of a search query.' })
 export class SearchResult {
   @Field(() => Int, { description: 'Total number of posts in the search.' })
@@ -166,6 +177,11 @@ export const SearchPostResult = createUnionType({
 export const CreatePostResult = createUnionType({
   name: 'CreatePostResult',
   types: () => [Post, Reply] as const,
+});
+
+export const SinglePostResult = createUnionType({
+  name: 'SinglePostResult',
+  types: () => [Post, DeletedPost] as const,
 });
 
 @ArgsType()

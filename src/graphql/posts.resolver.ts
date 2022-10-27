@@ -19,6 +19,7 @@ import {
   SearchParams,
   SearchPostResult,
   SearchResult,
+  SingleResult,
 } from './graphql.models';
 
 const mapPostResult =
@@ -112,6 +113,31 @@ export class PostsResolver {
       >,
       nextPageOffset: count > offset + limit ? offset + limit : undefined,
       previousPageOffset: offset > 0 ? Math.max(offset - limit, 0) : undefined,
+    };
+  }
+
+  @UseGuards(OptionalZitadelGraphqlAuthGuard)
+  @Query(() => SingleResult, {
+    description: 'Fetch a specific post.',
+  })
+  async post(
+    @Args('id', {
+      type: () => ID,
+      nullable: false,
+      description: 'The ID of the post.',
+    })
+    id: string,
+    @GqlUser() user: User,
+  ): Promise<SingleResult> {
+    if (!id) {
+      throw new HttpException('id is required', 400);
+    }
+
+    const { post, replies } = await this.posts.getPostWithReplies(id);
+
+    return {
+      post: mapPostResult(user)(post),
+      replies: replies.map(mapPostResult(user)),
     };
   }
 
