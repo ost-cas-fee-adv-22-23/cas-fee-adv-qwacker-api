@@ -179,6 +179,30 @@ export class PostsController {
   }
 
   @UseGuards(OptionalZitadelAuthGuard)
+  @Get(':id')
+  @ApiOperation({
+    description: 'Get a specific post.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID (ulid) of the post to get.',
+    example: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+  })
+  @ApiProduces('application/json')
+  @ApiResponse({
+    status: 200,
+    description:
+      'The requested post. This may be a post, a reply, or a deleted post.',
+    schema: {
+      oneOf: [postSchema, replySchema, deletedSchema],
+    },
+  })
+  async single(@RestUser() user: User, @Param('id') id: string) {
+    const { post } = await this.posts.getPostWithReplies(id);
+    return mapPostResult(user)(post);
+  }
+
+  @UseGuards(OptionalZitadelAuthGuard)
   @Get(':id/replies')
   @ApiOperation({
     description: 'Get an ordered list of replies for the given post.',

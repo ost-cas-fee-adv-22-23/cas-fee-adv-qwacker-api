@@ -1,0 +1,15 @@
+{
+  "details": {
+    "path": "/posts/01GEET1RVG2Y896KSAR8TR3Z9R",
+    "method": "GET",
+    "headers": []
+  },
+  "requests": [
+    {
+      "contentType": "none"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "rest",
+  "typeHint": "GET"
+}
