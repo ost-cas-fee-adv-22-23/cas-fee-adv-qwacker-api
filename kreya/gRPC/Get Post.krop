@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "posts.PostsService.Get"
+  },
+  "requests": [
+    {
+      "location": "Get Post-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

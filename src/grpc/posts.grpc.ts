@@ -119,6 +119,19 @@ export class PostsService {
 
   @UseGuards(OptionalZitadelGrpcAuthGuard)
   @GrpcMethod()
+  async get({ id }: IdRequest, metadata: Metadata): Promise<PostResult> {
+    if (!id) {
+      throw new RpcException('id is required');
+    }
+
+    const user = grpcUser(metadata);
+    const { post } = await this.posts.getPostWithReplies(id);
+
+    return mapPostResult(user)(post);
+  }
+
+  @UseGuards(OptionalZitadelGrpcAuthGuard)
+  @GrpcMethod()
   async replies(
     { id }: IdRequest,
     metadata: Metadata,

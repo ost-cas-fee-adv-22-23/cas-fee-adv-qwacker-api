@@ -54,6 +54,9 @@ service PostsService {
     // The result is paginated.
     rpc List(ListRequest) returns (ListResponse);
 
+    // Fetch a specific post.
+    rpc Get(IdRequest) returns(PostResult);
+
     // Get a list of posts that match the given search query.
     // The result is paginated.
     rpc Search(SearchRequest) returns (SearchResponse);
