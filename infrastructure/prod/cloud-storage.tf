@@ -4,13 +4,10 @@ resource "google_storage_bucket" "gcs-bucket" {
   uniform_bucket_level_access = false
 }
 
-resource "google_storage_bucket_access_control" "gcs-bucket" {
-  for_each = toset([
-    "READER",
-  ])
-  role   = each.key
+resource "google_storage_bucket_iam_member" "gcs-bucket" {
   bucket = google_storage_bucket.gcs-bucket.name
-  entity = "allUsers"
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
 }
 
 resource "google_service_account" "gcs-access" {
