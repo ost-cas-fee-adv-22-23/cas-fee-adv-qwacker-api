@@ -5,6 +5,12 @@ resource "zitadel_machine_user" "api-access" {
   description = "Service Account to access the user list of the org in env ${local.env}"
 }
 
+resource "zitadel_org_member" "api-access" {
+  org_id  = local.zitadel_org_id
+  user_id = zitadel_machine_user.api-access.id
+  roles   = ["ORG_OWNER_VIEWER"]
+}
+
 resource "zitadel_personal_access_token" "api-access" {
   org_id          = local.zitadel_org_id
   user_id         = zitadel_machine_user.api-access.id
