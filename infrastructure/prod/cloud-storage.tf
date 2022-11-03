@@ -1,7 +1,7 @@
 resource "google_storage_bucket" "gcs-bucket" {
   name                        = "${local.name}-${local.env}-data"
   location                    = local.gcp_region
-  uniform_bucket_level_access = true
+  uniform_bucket_level_access = false
 }
 
 resource "google_storage_bucket_access_control" "gcs-bucket" {
