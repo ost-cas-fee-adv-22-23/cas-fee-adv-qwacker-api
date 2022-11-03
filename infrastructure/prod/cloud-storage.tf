@@ -5,8 +5,12 @@ resource "google_storage_bucket" "gcs-bucket" {
 }
 
 resource "google_storage_bucket_access_control" "gcs-bucket" {
+  for_each = toset([
+    "READER",
+    "roles/storage.objectViewer",
+  ])
+  role   = each.key
   bucket = google_storage_bucket.gcs-bucket.name
-  role   = "READER"
   entity = "allUsers"
 }
 
