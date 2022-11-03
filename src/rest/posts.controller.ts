@@ -163,14 +163,14 @@ export class PostsController {
       data: posts.map(mapPostResult(user)),
       next:
         count > offset + limit
-          ? `${req.protocol}://${req.get('host')}${req.path}?${stringify({
+          ? `//${req.get('host')}${req.path}?${stringify({
               offset: offset + limit,
               limit: limit,
             })}`
           : undefined,
       previous:
         offset > 0
-          ? `${req.protocol}://${req.get('host')}${req.path}?${stringify({
+          ? `//${req.get('host')}${req.path}?${stringify({
               offset: Math.max(offset - limit, 0),
               limit: limit,
             })}`
