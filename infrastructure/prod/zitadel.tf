@@ -51,6 +51,7 @@ resource "zitadel_application_oidc" "frontend" {
     "http://localhost:5000/signin",
     "http://localhost:8080/signin",
     "http://localhost:3000/api/auth/callback/zitadel",
+    "https://cas-fee-adv-qwacker-app.vercel.app/api/auth/callback/zitadel",
   ]
   app_type                    = "OIDC_APP_TYPE_WEB"
   response_types              = ["OIDC_RESPONSE_TYPE_CODE"]
