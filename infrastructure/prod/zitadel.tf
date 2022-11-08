@@ -52,12 +52,13 @@ resource "zitadel_application_oidc" "frontend" {
     "http://localhost:8080/signin",
     "http://localhost:3000/api/auth/callback/zitadel",
   ]
-  app_type          = "OIDC_APP_TYPE_WEB"
-  response_types    = ["OIDC_RESPONSE_TYPE_CODE"]
-  grant_types       = ["OIDC_GRANT_TYPE_AUTHORIZATION_CODE"]
-  auth_method_type  = "OIDC_AUTH_METHOD_TYPE_NONE"
-  clock_skew        = "0s"
-  dev_mode          = true
-  version           = "OIDC_VERSION_1_0"
-  access_token_type = "OIDC_TOKEN_TYPE_BEARER"
+  app_type                    = "OIDC_APP_TYPE_WEB"
+  response_types              = ["OIDC_RESPONSE_TYPE_CODE"]
+  grant_types                 = ["OIDC_GRANT_TYPE_AUTHORIZATION_CODE"]
+  auth_method_type            = "OIDC_AUTH_METHOD_TYPE_NONE"
+  clock_skew                  = "0s"
+  dev_mode                    = true
+  version                     = "OIDC_VERSION_1_0"
+  access_token_type           = "OIDC_TOKEN_TYPE_BEARER"
+  id_token_userinfo_assertion = true
 }
