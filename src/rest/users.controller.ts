@@ -2,6 +2,7 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
+  Param,
   ParseIntPipe,
   Query,
   Req,
@@ -149,5 +150,19 @@ export class UsersController {
       firstName: user?.given_name,
       lastName: user?.family_name,
     };
+  }
+
+  @Get(':id')
+  @ApiOperation({
+    description: 'Fetch a user by id.',
+  })
+  @ApiProduces('application/json')
+  @ApiResponse({
+    status: 200,
+    description: 'The user.',
+    schema: userSchema,
+  })
+  getById(@Param('id') id: string): Promise<ZitadelUser> {
+    return this.users.get(id);
   }
 }

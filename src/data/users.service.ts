@@ -19,7 +19,9 @@ export type ZitadelUser = {
   avatarUrl: string;
 };
 
-const mapUser = (user: User & { type?: { $case: 'human' } }): ZitadelUser => ({
+type HumanUser = User & { type?: { $case: 'human' } };
+
+const mapUser = (user: HumanUser): ZitadelUser => ({
   id: user.id,
   userName: user.userName,
   firstName: user.type?.human?.profile?.firstName ?? 'firstName',
@@ -39,6 +41,15 @@ export class UsersService {
       config.getOrThrow('ZITADEL_URL'),
       createAccessTokenInterceptor(config.getOrThrow('ZITADEL_PAT')),
     );
+  }
+
+  async get(id: string) {
+    const { user } = await this.mgmt.getUserByID({ id });
+    if (!user || user.type?.$case !== 'human') {
+      throw new Error('User not found');
+    }
+
+    return mapUser(user as HumanUser);
   }
 
   async list(offset: number, limit: number) {

@@ -1,7 +1,7 @@
 {
-  "name": "qwacker-api",
+  "name": "mumble-api",
   "version": "0.0.0-development",
-  "description": "API for 'qwacker'. A simple messaging/twitter like api for the CAS Frontend Engineering Advanced.",
+  "description": "API for 'mumble'. A simple messaging/twitter like api for the CAS Frontend Engineering Advanced.",
   "author": "smartive AG <hello@smartive.ch>",
   "private": true,
   "license": "Apache 2.0",
