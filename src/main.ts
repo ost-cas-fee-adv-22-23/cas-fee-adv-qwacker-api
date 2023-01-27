@@ -50,7 +50,7 @@ async function bootstrap() {
       'Users',
       'User related calls. Fetch information about users in the system.',
     )
-    .addBearerAuth(
+    .addOAuth2(
       {
         type: 'openIdConnect',
         description: 'ZITADEL Authentication',
@@ -58,20 +58,22 @@ async function bootstrap() {
         in: 'header',
         openIdConnectUrl:
           'https://cas-fee-advanced-ocvdad.zitadel.cloud/.well-known/openid-configuration',
-        flows: {
-          authorizationCode: {
-            scopes: {
-              openid: 'openid',
-              profile: 'profile',
-            },
-          },
-        },
       },
       'ZITADEL',
     )
     .build();
   const document = SwaggerModule.createDocument(app, swagger);
-  SwaggerModule.setup('rest', app, document);
+  SwaggerModule.setup('rest', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      oauth2RedirectUrl: process.env.AUTH_REDIRECT_URI,
+      initOAuth: {
+        clientId: process.env.AUTH_CLIENT_ID,
+        scopes: 'openid profile email',
+        usePkceWithAuthorizationCodeGrant: true,
+      },
+    },
+  });
 
   await app.startAllMicroservices();
   log(

@@ -97,6 +97,16 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
+          name  = "AUTH_CLIENT_ID"
+          value = "181236603920908545@cas_fee_adv_qwacker_prod"
+        }
+
+        env {
+          name  = "AUTH_REDIRECT_URI"
+          value = "https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/rest/oauth2-redirect.html"
+        }
+
+        env {
           name = "AUTH_JWT_KEY"
           value_from {
             secret_key_ref {
