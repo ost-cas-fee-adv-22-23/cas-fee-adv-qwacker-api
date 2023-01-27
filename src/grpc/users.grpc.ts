@@ -1,12 +1,13 @@
 import { Metadata } from '@grpc/grpc-js';
 import { UseGuards } from '@nestjs/common';
-import { GrpcMethod, GrpcService } from '@nestjs/microservices';
+import { GrpcMethod, GrpcService, RpcException } from '@nestjs/microservices';
 import { User } from 'src/auth/user';
 import {
   UsersService as DataUsersService,
   ZitadelUser,
 } from '../data/users.service';
 import { Empty } from './gen/google/protobuf/Empty';
+import { GetRequest } from './gen/users/GetRequest';
 import { ListRequest } from './gen/users/ListRequest';
 import { ListResponse } from './gen/users/ListResponse';
 import { User as GrpcUser } from './gen/users/User';
@@ -49,6 +50,16 @@ export class UsersService {
             }
           : null,
     };
+  }
+
+  @GrpcMethod()
+  async get({ id }: GetRequest): Promise<GrpcUser> {
+    if (!id) {
+      throw new RpcException('id is required');
+    }
+
+    const user = await this.users.get(id);
+    return mapUser(user);
   }
 
   @GrpcMethod()

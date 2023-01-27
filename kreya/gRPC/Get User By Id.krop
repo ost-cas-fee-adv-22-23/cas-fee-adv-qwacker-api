@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "users.UsersService.Get"
+  },
+  "requests": [
+    {
+      "location": "Get User By Id-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

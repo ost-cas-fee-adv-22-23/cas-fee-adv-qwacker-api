@@ -30,6 +30,9 @@ service UsersService {
     // The result is paginated.
     rpc List(ListRequest) returns (ListResponse);
 
+    // Fetch a user by ID.
+    rpc Get(GetRequest) returns (User);
+
     // Get the authenticated own user.
     rpc Me(google.protobuf.Empty) returns (User);
 }
@@ -37,7 +40,10 @@ service UsersService {
 message ListRequest {
     uint32 offset = 1;
     uint32 limit = 2;
-    string newer_than = 3;
+}
+
+message GetRequest {
+    string id = 1;
 }
 
 message ListResponse {
