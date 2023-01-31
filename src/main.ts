@@ -38,7 +38,7 @@ async function bootstrap() {
   const swagger = new DocumentBuilder()
     .setTitle('qwacker API')
     .setDescription(description)
-    .setVersion(version)
+    .setVersion(process.env.BUILD_VERSION ?? version)
     .setLicense('Apache 2.0', 'https://www.apache.org/licenses/LICENSE-2.0')
     .setContact('smartive AG', 'https://smartive.ch', 'education@smartive.ch')
     .addTag(
