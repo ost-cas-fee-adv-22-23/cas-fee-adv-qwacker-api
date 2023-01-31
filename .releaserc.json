@@ -29,7 +29,8 @@
         "dockerArgs": {
           "BUILD_VERSION": "{{major}}.{{minor}}.{{patch}}",
           "COMMIT_SHA": "{{git_sha}}"
-        }
+        },
+        "dockerAutoClean": false
       }
     ],
     [
@@ -51,7 +52,8 @@
         "dockerArgs": {
           "BUILD_VERSION": "{{major}}.{{minor}}.{{patch}}",
           "COMMIT_SHA": "{{git_sha}}"
-        }
+        },
+        "dockerAutoClean": false
       }
     ],
     [
@@ -63,7 +65,8 @@
         "dockerLogin": false,
         "dockerContext": "./",
         "dockerFile": "./grpc-web-proxy.dockerfile",
-        "dockerTags": ["{{major}}.{{minor}}.{{patch}}"]
+        "dockerTags": ["{{major}}.{{minor}}.{{patch}}"],
+        "dockerAutoClean": false
       }
     ]
   ]
