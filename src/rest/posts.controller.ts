@@ -112,6 +112,20 @@ export class PostsController {
       },
     },
   })
+  @ApiQuery({
+    name: 'olderThan',
+    required: false,
+    description:
+      'The ID of a post, to only return posts that are older than the given post. If omitted, all posts are returned.',
+    examples: {
+      'all posts': {
+        value: undefined,
+      },
+      'posts older than a given post': {
+        value: '01GEESHPQQ4NJKNZJN9AKWQW6G',
+      },
+    },
+  })
   @ApiProduces('application/json')
   @ApiResponse({
     status: 200,
@@ -155,8 +169,14 @@ export class PostsController {
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
     @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
     @Query('newerThan') newerThan?: string,
+    @Query('olderThan') olderThan?: string,
   ): Promise<PaginatedResult<PostResult>> {
-    const { count, posts } = await this.posts.list(offset, limit, newerThan);
+    const { count, posts } = await this.posts.list(
+      offset,
+      limit,
+      newerThan,
+      olderThan,
+    );
 
     return {
       count,
