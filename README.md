@@ -93,4 +93,7 @@ If you want to develop on this API, follow the instructions below.
 1. Clone the repository
 2. Install the dependencies with `npm install`
 3. Generate the gRPC files with `npm run grpc:types`
+3. Copy environment variables `cp .env.dist .env` (Ask smartive for secrets)
+3. Start db `npm run deps`
+3. Run db migrations
 4. Start the API with `npm run start:dev`

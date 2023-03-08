@@ -126,6 +126,20 @@ export class PostsController {
       },
     },
   })
+  @ApiQuery({
+    name: 'creator',
+    required: false,
+    description:
+      'The ID of a creator. Only posts of this should be returned. If omitted, all posts are returned.',
+    examples: {
+      'all posts': {
+        value: undefined,
+      },
+      'posts from Peter Manser': {
+        value: '195305735549092097',
+      },
+    },
+  })
   @ApiProduces('application/json')
   @ApiResponse({
     status: 200,
@@ -170,12 +184,14 @@ export class PostsController {
     @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number,
     @Query('newerThan') newerThan?: string,
     @Query('olderThan') olderThan?: string,
+    @Query('creator') creator?: string,
   ): Promise<PaginatedResult<PostResult>> {
     const { count, posts } = await this.posts.list(
       offset,
       limit,
       newerThan,
       olderThan,
+      creator,
     );
 
     return {
@@ -185,14 +201,16 @@ export class PostsController {
         count > offset + limit
           ? `//${req.get('host')}${req.path}?${stringify({
               offset: offset + limit,
-              limit: limit,
+              limit,
+              creator,
             })}`
           : undefined,
       previous:
         offset > 0
           ? `//${req.get('host')}${req.path}?${stringify({
               offset: Math.max(offset - limit, 0),
-              limit: limit,
+              limit,
+              creator,
             })}`
           : undefined,
     };
