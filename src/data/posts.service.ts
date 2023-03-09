@@ -46,10 +46,6 @@ export class PostsService {
       idQuery = LessThan(olderThan);
     }
     
-    let creatorQuery = {};
-    if (creator) {
-      creatorQuery = { creator };
-    }
 
     const [posts, count] = await this.aggregatedPosts.findAndCount({
       skip: offset,
@@ -60,7 +56,7 @@ export class PostsService {
       where: {
         parentId: IsNull(),
         id: idQuery,
-        ...creatorQuery
+        ...(creator ? {creator} : {})
       },
     });
     return { posts, count };
