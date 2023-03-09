@@ -29,6 +29,7 @@ export class PostsService {
     limit: number,
     newerThan?: string,
     olderThan?: string,
+    creator?: string,
   ) {
     limit = clamp(limit, 1, 1000);
 
@@ -36,7 +37,7 @@ export class PostsService {
 
     if (newerThan && olderThan) {
       idQuery = Raw(
-        (alias) => `${alias} > :newerThan AND ${alias} < :olderThan`,
+        (alias: string) => `${alias} > :newerThan AND ${alias} < :olderThan`,
         { newerThan, olderThan },
       );
     } else if (newerThan) {
@@ -44,6 +45,7 @@ export class PostsService {
     } else if (olderThan) {
       idQuery = LessThan(olderThan);
     }
+    
 
     const [posts, count] = await this.aggregatedPosts.findAndCount({
       skip: offset,
@@ -54,6 +56,7 @@ export class PostsService {
       where: {
         parentId: IsNull(),
         id: idQuery,
+        ...(creator ? {creator} : {})
       },
     });
     return { posts, count };
