@@ -130,7 +130,7 @@ export class PostsController {
     name: 'creator',
     required: false,
     description:
-      'The ID of a creator. Only posts of this should be returned. If omitted, all posts are returned.',
+      'The ID of a creator. Only posts of the given creator should be returned. If omitted, all posts are returned.',
     examples: {
       'all posts': {
         value: undefined,
@@ -152,7 +152,7 @@ export class PostsController {
           type: 'array',
           items: {
             uniqueItems: true,
-            oneOf: [postSchema, replySchema, deletedSchema],
+            ...postSchema,
           },
         },
         count: {
@@ -258,7 +258,8 @@ export class PostsController {
       type: 'array',
       uniqueItems: true,
       items: {
-        oneOf: [replySchema, deletedSchema],
+        uniqueItems: true,
+        ...replySchema,
       },
     },
   })
