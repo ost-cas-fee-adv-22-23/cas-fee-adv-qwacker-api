@@ -67,7 +67,7 @@ export class PostsService {
    * Results are paginated. Does not find deleted posts.
    */
   async search(
-    { isReply, text, mentions, tags }: SearchParams,
+    { isReply, text, mentions, tags, likedBy }: SearchParams,
     offset: number,
     limit: number,
   ) {
@@ -106,6 +106,10 @@ export class PostsService {
           }
         }),
       );
+    }
+
+    if (likedBy !== undefined && likedBy.length > 0) {
+      query = query.andWhere(`p.likers && :likedBy`, { likedBy });
     }
 
     const [posts, count] = await query.getManyAndCount();

@@ -173,6 +173,17 @@ export const searchParamsSchema: Record<
       example: 'newpost',
     },
   },
+  likedBy: {
+    type: 'array',
+    items: {
+      uniqueItems: true,
+      type: 'string',
+      nullable: false,
+      description:
+        'Search for posts that were liked by specific user(s). If multiple user ids are provided, they are "or"-ed (if a post is liked by user A OR B).',
+      example: '179944860378202369',
+    },
+  },
   mentions: {
     type: 'array',
     items: {
