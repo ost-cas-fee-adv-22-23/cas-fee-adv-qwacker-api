@@ -3,6 +3,7 @@ export type SearchParams = {
   tags?: string[];
   mentions?: string[];
   isReply?: boolean;
+  likedBy?: string[];
 };
 
 export type CreateParams = {
