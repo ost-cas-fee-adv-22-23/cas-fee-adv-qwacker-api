@@ -58,7 +58,10 @@ resource "zitadel_application_oidc" "frontend" {
     "http://app-yeahyeahyeah:3000/api/auth/callback/zitadel",
     "http://host.docker.internal:3000/api/auth/callback/zitadel",
     "https://app-pizza-hawaii.vercel.app/api/auth/callback/zitadel",
-    "https://app-team-ost.vercel.app/api/auth/callback/zitadel"
+    "https://app-team-ost.vercel.app/api/auth/callback/zitadel",
+    "https://app-bytelight.vercel.app/api/auth/callback/zitadel",
+    "https://app-lobsome.vercel.app/api/auth/callback/zitadel",
+    "https://app-pizza-hawaii.vercel.app/api/auth/callback/zitadel"
   ]
   app_type                    = "OIDC_APP_TYPE_WEB"
   response_types              = ["OIDC_RESPONSE_TYPE_CODE"]
